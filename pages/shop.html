@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABYSSAL — THE MARKET</title>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/glitch.css" />
+  <link rel="stylesheet" href="../css/shop.css" />
+</head>
+<body>
+
+  <!-- Overlays -->
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="noise"></div>
+
+  <!-- Mandelbulb corners -->
+  <canvas id="bulb-tl" class="bulb-canvas bulb-tl"></canvas>
+  <canvas id="bulb-tr" class="bulb-canvas bulb-tr"></canvas>
+  <canvas id="bulb-bl" class="bulb-canvas bulb-bl"></canvas>
+  <canvas id="bulb-br" class="bulb-canvas bulb-br"></canvas>
+
+  <!-- Holographic symbols -->
+  <div class="symbols-layer" id="symbols-layer"></div>
+
+  <!-- Flickering lights -->
+  <div class="flicker-light fl-1"></div>
+  <div class="flicker-light fl-2"></div>
+  <div class="flicker-light fl-3"></div>
+
+  <!-- Cart toggle button -->
+  <button class="cart-toggle" id="cart-toggle">
+    CART <span class="cart-count" id="cart-count">0</span>
+  </button>
+
+  <!-- Cart sidebar -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <span class="cart-title">YOUR ACQUISITIONS</span>
+      <button class="cart-close" id="cart-close">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-total-area">
+      <div class="cart-total-line">
+        <span>TOTAL OWED TO THE VOID</span>
+        <span class="cart-total-price" id="cart-total-price">∅ 0.00</span>
+      </div>
+      <button class="checkout-btn" id="checkout-btn">COMPLETE ACQUISITION</button>
+    </div>
+  </div>
+
+  <!-- Checkout modal -->
+  <div class="checkout-modal" id="checkout-modal">
+    <div class="checkout-modal-inner">
+      <div class="checkout-modal-title glitch-text" data-text="ORDER RECEIVED">
+        ORDER RECEIVED
+      </div>
+      <p class="checkout-modal-msg" id="checkout-modal-msg"></p>
+      <button class="checkout-modal-close" id="checkout-modal-close">
+        CLOSE AND FORGET
+      </button>
+    </div>
+  </div>
+
+  <!-- Main shop content -->
+  <main class="shop-wrapper">
+
+    <!-- Back link -->
+    <div style="padding-top: 2rem;">
+      <a href="../index.html" class="nav-link">← RETURN TO THE SURFACE</a>
+    </div>
+
+    <!-- Shop header -->
+    <header class="shop-header">
+      <h1 class="shop-title glitch-text" data-text="THE MARKET">THE MARKET</h1>
+      <p class="shop-subtitle">
+        [ all items are real. all prices are final. all sales are permanent. ]
+      </p>
+    </header>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">ALL LISTINGS</button>
+      <button class="filter-btn" data-filter="digital">DIGITAL GOODS</button>
+      <button class="filter-btn" data-filter="curiosities">PHYSICAL CURIOSITIES</button>
+      <button class="filter-btn" data-filter="arcane">ARCANE INSTRUMENTS</button>
+      <button class="filter-btn" data-filter="media">MEDIA & DOCUMENTS</button>
+      <button class="filter-btn" data-filter="tech">TECH & DATA</button>
+    </div>
+
+    <!-- Shop grid -->
+    <div class="shop-grid" id="shop-grid">
+      <!-- Populated by shop.js -->
+    </div>
+
+    <!-- Bottom warning -->
+    <div class="warning-block" style="margin-top: 2rem;">
+      <p class="warning-text glitch-text" data-text="ALL SALES ARE PERMANENT">
+        ALL SALES ARE PERMANENT
+      </p>
+      <p class="warning-sub">
+        by browsing this market you have agreed to terms you were not shown.
+        your continued presence is considered acceptance.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        © ABYSSAL —
+        <span id="footer-year"></span>
+        — ALL SALES ARE FINAL. ALL SALES ARE PERMANENT.
+      </p>
+      <p class="footer-coords" id="footer-coords">[ locating you... ]</p>
+    </footer>
+
+  </main>
+
+  <!-- Easter egg overlay -->
+  <div class="egg-overlay" id="egg-overlay">
+    <div class="egg-content">
+      <p id="egg-message"></p>
+    </div>
+  </div>
+
+  <!-- Easter egg dot -->
+  <div id="egg-trigger" class="egg-trigger"></div>
+
+  <!-- Scripts -->
+  <script src="../js/audio.js"></script>
+  <script src="../js/mandelbulb.js"></script>
+  <script src="../js/symbols.js"></script>
+  <script src="../js/effects.js"></script>
+  <script src="../js/shop.js"></script>
+  <script src="../js/easter-eggs.js"></script>
+  <script src="../js/main.js"></script>
+
+</body>
+</html>
