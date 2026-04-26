@@ -1,0 +1,78 @@
+# ============================================
+# ABYSSAL — .gitignore
+# ============================================
+
+# --- Environment & Secrets ---
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+*.secret
+*.secrets
+secrets/
+config/secrets.*
+
+# --- API Keys & Credentials ---
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+api-keys.*
+credentials.*
+
+# --- YubiKey & Hardware Security ---
+*.yubikey
+*.ykpersonalization
+yubikey-config/
+*.slot
+*.oath
+*.gpg
+*.gpg-encrypted
+*.asc
+.gnupg/
+yubikey.*
+yk-*.cfg
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# --- VS Code ---
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+*.code-workspace
+
+# --- Node (if added later) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# --- Logs ---
+logs/
+*.log
+crash.log
+
+# --- Build & Cache ---
+dist/
+build/
+.cache/
+*.tmp
+*.temp
+
+# --- Audio source files (raw) ---
+assets/audio/raw/
+assets/audio/*.wav
+assets/audio/*.aiff
+
+# --- Local dev notes ---
+notes.txt
+TODO.txt
+scratch.*
