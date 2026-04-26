@@ -1,0 +1,227 @@
+/* ============================================
+   ABYSSAL — glitch.css
+   ============================================ */
+
+/* --- Base Glitch Text --- */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.glitch-text::before {
+  color: var(--crimson);
+  animation: glitchBefore 3.5s infinite steps(2);
+  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+}
+
+.glitch-text::after {
+  color: var(--ice-blue);
+  animation: glitchAfter 4s infinite steps(2);
+  clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+}
+
+@keyframes glitchBefore {
+  0%   { transform: translate(0);         clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+  10%  { transform: translate(-4px, 2px); clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); }
+  20%  { transform: translate(4px, -2px); clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
+  30%  { transform: translate(0);         clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+  70%  { transform: translate(0);         clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+  80%  { transform: translate(3px, 1px);  clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%); }
+  90%  { transform: translate(-3px, 0);   clip-path: polygon(0 5%,  100% 5%,  100% 20%, 0 20%); }
+  100% { transform: translate(0);         clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+}
+
+@keyframes glitchAfter {
+  0%   { transform: translate(0);         clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  15%  { transform: translate(4px, -1px); clip-path: polygon(0 70%, 100% 70%, 100% 90%, 0 90%); }
+  25%  { transform: translate(-4px, 2px); clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+  35%  { transform: translate(0);         clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  65%  { transform: translate(0);         clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  75%  { transform: translate(-3px, 2px); clip-path: polygon(0 75%, 100% 75%, 100% 95%, 0 95%); }
+  85%  { transform: translate(3px, -2px); clip-path: polygon(0 50%, 100% 50%, 100% 65%, 0 65%); }
+  100% { transform: translate(0);         clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+}
+
+/* --- Header Glitch --- */
+.header-glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.header-glitch::before,
+.header-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.header-glitch::before {
+  color: var(--blood-red);
+  animation: headerGlitchBefore 6s infinite;
+  text-shadow: none;
+}
+
+.header-glitch::after {
+  color: var(--ice-blue);
+  animation: headerGlitchAfter 6s infinite;
+  text-shadow: none;
+}
+
+@keyframes headerGlitchBefore {
+  0%   { transform: translate(0);        opacity: 0; }
+  92%  { transform: translate(0);        opacity: 0; }
+  93%  { transform: translate(-5px, 0);  opacity: 0.7; }
+  94%  { transform: translate(5px, 0);   opacity: 0.5; }
+  95%  { transform: translate(0);        opacity: 0; }
+  98%  { transform: translate(-3px, 1px); opacity: 0.6; }
+  99%  { transform: translate(3px, -1px); opacity: 0.4; }
+  100% { transform: translate(0);        opacity: 0; }
+}
+
+@keyframes headerGlitchAfter {
+  0%   { transform: translate(0);        opacity: 0; }
+  88%  { transform: translate(0);        opacity: 0; }
+  89%  { transform: translate(4px, 0);   opacity: 0.6; }
+  90%  { transform: translate(-4px, 0);  opacity: 0.4; }
+  91%  { transform: translate(0);        opacity: 0; }
+  96%  { transform: translate(2px, -2px); opacity: 0.5; }
+  97%  { transform: translate(-2px, 2px); opacity: 0.3; }
+  100% { transform: translate(0);        opacity: 0; }
+}
+
+/* --- Glitch Block (full element glitch) --- */
+.glitch-block {
+  position: relative;
+  overflow: hidden;
+}
+
+.glitch-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 2px;
+  background: var(--blood-red);
+  animation: glitchLine 4s infinite;
+  opacity: 0.6;
+}
+
+@keyframes glitchLine {
+  0%   { top: 0%;   left: -100%; }
+  50%  { top: 50%;  left: 120%; }
+  51%  { top: 30%;  left: -100%; }
+  100% { top: 80%;  left: 120%; }
+}
+
+/* --- RGB Split --- */
+.rgb-split {
+  position: relative;
+  display: inline-block;
+  color: var(--dim-white);
+}
+
+.rgb-split::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 2px;
+  color: var(--crimson);
+  opacity: 0.7;
+  animation: rgbShiftRed 5s infinite steps(3);
+}
+
+.rgb-split::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: -2px;
+  color: var(--ice-blue);
+  opacity: 0.7;
+  animation: rgbShiftBlue 5s infinite steps(3);
+}
+
+@keyframes rgbShiftRed {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(3px, -1px); }
+  66%  { transform: translate(-3px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes rgbShiftBlue {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(-3px, 1px); }
+  66%  { transform: translate(3px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* --- Data Corruption Text --- */
+.corrupt-text {
+  position: relative;
+  display: inline-block;
+  animation: corruptPulse 8s infinite;
+}
+
+@keyframes corruptPulse {
+  0%   { filter: none; }
+  95%  { filter: none; }
+  96%  { filter: blur(1px) brightness(2); }
+  97%  { filter: none; }
+  98%  { filter: blur(2px) hue-rotate(90deg); }
+  99%  { filter: none; }
+  100% { filter: none; }
+}
+
+/* --- Horizontal Tear --- */
+@keyframes horizontalTear {
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+  10%  { clip-path: inset(30% 0 60% 0); opacity: 1; }
+  20%  { clip-path: inset(60% 0 20% 0); opacity: 1; }
+  30%  { clip-path: inset(0 0 0 0);     opacity: 1; }
+  100% { clip-path: inset(0 0 0 0);     opacity: 1; }
+}
+
+.tear-in {
+  animation: horizontalTear 1.2s steps(3) forwards;
+}
+
+/* --- Static Burst --- */
+.static-burst {
+  animation: staticBurst 0.15s steps(1) infinite;
+}
+
+@keyframes staticBurst {
+  0%   { filter: invert(0) hue-rotate(0deg); }
+  25%  { filter: invert(1) hue-rotate(180deg); }
+  50%  { filter: invert(0) hue-rotate(90deg); }
+  75%  { filter: invert(1) hue-rotate(270deg); }
+  100% { filter: invert(0) hue-rotate(0deg); }
+}
+
+/* --- Nav Link Glitch on Hover --- */
+.nav-link:hover {
+  animation: glitchShake 0.3s steps(2) infinite;
+}
+
+/* --- Cursor Interference --- */
+@keyframes cursorInterference {
+  0%   { border-color: var(--blood-red); }
+  25%  { border-color: var(--ice-blue); }
+  50%  { border-color: var(--crimson); }
+  75%  { border-color: var(--silver); }
+  100% { border-color: var(--blood-red); }
+}
+
+/* --- Card Glitch on Hover --- */
+.preview-card:hover .card-name {
+  animation: glitchShake 0.4s steps(2) infinite,
+             chromatic 2s infinite;
+}

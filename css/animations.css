@@ -1,0 +1,234 @@
+/* ============================================
+   ABYSSAL — animations.css
+   ============================================ */
+
+/* --- Noise Shift --- */
+@keyframes noiseShift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, -1%); }
+  50%  { transform: translate(1%, 2%); }
+  75%  { transform: translate(2%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* --- Breathing (site-wide slow pulse) --- */
+@keyframes breathe {
+  0%   { transform: scale(1);    opacity: 0.85; }
+  50%  { transform: scale(1.012); opacity: 1; }
+  100% { transform: scale(1);    opacity: 0.85; }
+}
+
+/* --- Flicker --- */
+@keyframes flicker {
+  0%   { opacity: 1; }
+  3%   { opacity: 0.4; }
+  6%   { opacity: 1; }
+  9%   { opacity: 0.7; }
+  12%  { opacity: 1; }
+  55%  { opacity: 1; }
+  57%  { opacity: 0.2; }
+  59%  { opacity: 1; }
+  80%  { opacity: 1; }
+  83%  { opacity: 0.5; }
+  86%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* --- Header Breathe --- */
+.header-glitch {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* --- Flicker Lights --- */
+.fl-1 { animation: flicker 7s infinite; }
+.fl-2 { animation: flicker 4.5s infinite 1.2s; }
+.fl-3 { animation: flicker 9s infinite 3s; }
+
+/* --- Slow Pulse (warning block) --- */
+@keyframes slowPulse {
+  0%   { box-shadow: 0 0 0px rgba(139,0,0,0); }
+  50%  { box-shadow: 0 0 30px rgba(139,0,0,0.25); }
+  100% { box-shadow: 0 0 0px rgba(139,0,0,0); }
+}
+
+.warning-block {
+  animation: slowPulse 5s ease-in-out infinite;
+}
+
+/* --- Drip --- */
+@keyframes drip {
+  0%   { height: 0px;   opacity: 1; }
+  80%  { opacity: 1; }
+  100% { height: 120px; opacity: 0; }
+}
+
+.drip {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--blood-red), transparent);
+  border-radius: 0 0 4px 4px;
+  animation: drip linear forwards;
+}
+
+/* --- Holographic Symbol Float --- */
+@keyframes symbolFloat {
+  0%   { transform: translateY(0px)   rotate(0deg)   scale(1);    opacity: 0.18; }
+  25%  { transform: translateY(-8px)  rotate(5deg)   scale(1.05); opacity: 0.25; }
+  50%  { transform: translateY(-4px)  rotate(-3deg)  scale(0.97); opacity: 0.18; }
+  75%  { transform: translateY(-12px) rotate(4deg)   scale(1.03); opacity: 0.22; }
+  100% { transform: translateY(0px)   rotate(0deg)   scale(1);    opacity: 0.18; }
+}
+
+.holo-symbol {
+  position: absolute;
+  font-size: 2.5rem;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(68, 136, 170, 0.4);
+  text-shadow:
+    0 0 12px rgba(68,136,170,0.3),
+    0 0 30px rgba(68,136,170,0.1);
+  pointer-events: none;
+  animation: symbolFloat linear infinite;
+  filter: blur(0.4px);
+}
+
+/* --- Chromatic Aberration Pulse --- */
+@keyframes chromatic {
+  0%   { text-shadow: 2px 0 var(--blood-red), -2px 0 var(--ice-blue); }
+  25%  { text-shadow: -3px 0 var(--blood-red), 3px 0 var(--ice-blue); }
+  50%  { text-shadow: 3px 0 var(--crimson),   -3px 0 var(--ice-blue); }
+  75%  { text-shadow: -2px 0 var(--blood-red), 2px 0 var(--silver); }
+  100% { text-shadow: 2px 0 var(--blood-red), -2px 0 var(--ice-blue); }
+}
+
+/* --- Glitch Shake --- */
+@keyframes glitchShake {
+  0%   { transform: translate(0); }
+  10%  { transform: translate(-3px, 1px); }
+  20%  { transform: translate(3px, -1px); }
+  30%  { transform: translate(-2px, 2px); }
+  40%  { transform: translate(2px, -2px); }
+  50%  { transform: translate(-1px, 1px); }
+  60%  { transform: translate(3px, 0); }
+  70%  { transform: translate(-3px, -1px); }
+  80%  { transform: translate(1px, 2px); }
+  90%  { transform: translate(-1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+/* --- Scan Line Sweep --- */
+@keyframes scanSweep {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+.scan-sweep {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right,
+    transparent,
+    rgba(139,0,0,0.15),
+    rgba(220,20,60,0.2),
+    rgba(139,0,0,0.15),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 9995;
+  animation: scanSweep 10s linear infinite;
+}
+
+/* --- Type Writer Cursor --- */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--blood-red);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+/* --- Fade In Up --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+}
+
+/* --- Explode Out --- */
+@keyframes explodeOut {
+  0%   { transform: scale(1);   opacity: 1; }
+  60%  { transform: scale(1.8); opacity: 0.6; }
+  100% { transform: scale(3);   opacity: 0; }
+}
+
+.explode {
+  animation: explodeOut 0.6s ease-out forwards;
+}
+
+/* --- Card Hover Breathe --- */
+@keyframes cardBreathe {
+  0%   { box-shadow: 0 0 0px rgba(139,0,0,0); }
+  50%  { box-shadow: 0 0 20px rgba(139,0,0,0.3); }
+  100% { box-shadow: 0 0 0px rgba(139,0,0,0); }
+}
+
+.preview-card:hover {
+  animation: cardBreathe 2s ease-in-out infinite;
+}
+
+/* --- Footer Coords Pulse --- */
+@keyframes coordPulse {
+  0%   { opacity: 0.3; }
+  50%  { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+.footer-coords {
+  animation: coordPulse 4s ease-in-out infinite;
+}
+
+/* --- Egg Overlay Glitch In --- */
+@keyframes glitchIn {
+  0%   { clip-path: inset(40% 0 60% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(10% 0 80% 0); transform: translate(4px, 0); }
+  40%  { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 0); }
+  60%  { clip-path: inset(30% 0 50% 0); transform: translate(2px, 0); }
+  80%  { clip-path: inset(5% 0 90% 0);  transform: translate(0, 0); }
+  100% { clip-path: inset(0% 0 0% 0);   transform: translate(0, 0); }
+}
+
+.egg-overlay.active .egg-content {
+  animation: glitchIn 0.5s steps(2) forwards;
+}
+
+/* --- Rotate Slow (for symbols) --- */
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* --- Expand Ring --- */
+@keyframes expandRing {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(139,0,0,0.4);
+  animation: expandRing 2s ease-out infinite;
+  pointer-events: none;
+}
