@@ -1,6 +1,8 @@
 /* ============================================
    ABYSSAL — effects.js
-   Drip, particles, scan sweep, breathing page
+   Drip, particles, scan sweep, breathing page,
+   lightning, falling embers, alone counter,
+   card scramble on scroll
    ============================================ */
 
 (function () {
@@ -18,7 +20,7 @@
     if (!container) return;
 
     function spawnDrip() {
-      const drip = document.createElement('div');
+      const drip     = document.createElement('div');
       drip.classList.add('drip');
 
       const x        = Math.random() * 100;
@@ -26,12 +28,11 @@
       const width    = 1.5 + Math.random() * 3;
       const delay    = Math.random() * 2;
 
-      drip.style.left             = x + '%';
-      drip.style.width            = width + 'px';
+      drip.style.left              = x + '%';
+      drip.style.width             = width + 'px';
       drip.style.animationDuration = duration + 's';
       drip.style.animationDelay   = delay + 's';
 
-      // Vary the red shade
       const reds = [
         'linear-gradient(to bottom, #8b0000, transparent)',
         'linear-gradient(to bottom, #dc143c, transparent)',
@@ -39,22 +40,15 @@
         'linear-gradient(to bottom, #a00000, transparent)'
       ];
       drip.style.background = reds[Math.floor(Math.random() * reds.length)];
-
       container.appendChild(drip);
 
-      // Remove after animation
       setTimeout(() => {
         if (drip.parentNode) drip.parentNode.removeChild(drip);
       }, (duration + delay + 0.5) * 1000);
     }
 
-    // Spawn drips on interval
     setInterval(spawnDrip, 600 + Math.random() * 800);
-
-    // Initial burst
-    for (let i = 0; i < 6; i++) {
-      setTimeout(spawnDrip, i * 300);
-    }
+    for (let i = 0; i < 6; i++) setTimeout(spawnDrip, i * 300);
   }
 
   // --- Blood drip from top of viewport ---
@@ -70,12 +64,11 @@
       const duration = 2.5 + Math.random() * 3;
       const width    = 1 + Math.random() * 2.5;
 
-      drip.style.left             = x + '%';
-      drip.style.width            = width + 'px';
+      drip.style.left              = x + '%';
+      drip.style.width             = width + 'px';
       drip.style.animationDuration = duration + 's';
-      drip.style.background       = 'linear-gradient(to bottom, #8b0000, transparent)';
-      drip.style.opacity          = (0.3 + Math.random() * 0.5).toString();
-
+      drip.style.background        = 'linear-gradient(to bottom, #8b0000, transparent)';
+      drip.style.opacity           = (0.3 + Math.random() * 0.5).toString();
       document.body.appendChild(drip);
 
       setTimeout(() => {
@@ -109,10 +102,9 @@
         z-index: 99990;
         transform: translate(-50%, -50%);
       `;
-
       document.body.appendChild(p);
 
-      const angle    = (Math.random() * Math.PI * 2);
+      const angle    = Math.random() * Math.PI * 2;
       const speed    = 40 + Math.random() * 80;
       const dx       = Math.cos(angle) * speed;
       const dy       = Math.sin(angle) * speed;
@@ -126,7 +118,7 @@
           if (p.parentNode) p.parentNode.removeChild(p);
           return;
         }
-        const ease = 1 - progress;
+        const ease   = 1 - progress;
         p.style.left    = (x + dx * progress) + 'px';
         p.style.top     = (y + dy * progress + 60 * progress * progress) + 'px';
         p.style.opacity = ease.toString();
@@ -177,42 +169,37 @@
       'No refunds. No returns. No escape.',
     ];
 
-    let lineIndex  = 0;
-    let charIndex  = 0;
-    let deleting   = false;
-    let pauseTimer = null;
+    let lineIndex = 0;
+    let charIndex = 0;
+    let deleting  = false;
 
-    // Add cursor
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
     el.parentNode.insertBefore(cursor, el.nextSibling);
 
     function type() {
       const current = lines[lineIndex];
-
       if (!deleting) {
         charIndex++;
         el.textContent = current.slice(0, charIndex);
         if (charIndex === current.length) {
-          deleting   = true;
-          pauseTimer = setTimeout(type, 2800);
+          deleting = true;
+          setTimeout(type, 2800);
           return;
         }
       } else {
         charIndex--;
         el.textContent = current.slice(0, charIndex);
         if (charIndex === 0) {
-          deleting   = false;
-          lineIndex  = (lineIndex + 1) % lines.length;
-          pauseTimer = setTimeout(type, 600);
+          deleting  = false;
+          lineIndex = (lineIndex + 1) % lines.length;
+          setTimeout(type, 600);
           return;
         }
       }
-
       const speed = deleting
         ? 28 + Math.random() * 20
         : 55 + Math.random() * 40;
-
       setTimeout(type, speed);
     }
 
@@ -225,9 +212,9 @@
     if (!el) return;
 
     function randomCoord() {
-      const lat  = (Math.random() * 180 - 90).toFixed(4);
-      const lng  = (Math.random() * 360 - 180).toFixed(4);
-      const acc  = (Math.random() * 80 + 10).toFixed(1);
+      const lat = (Math.random() * 180 - 90).toFixed(4);
+      const lng = (Math.random() * 360 - 180).toFixed(4);
+      const acc = (Math.random() * 80 + 10).toFixed(1);
       el.textContent = `[ ${lat}°N  ${lng}°E  ±${acc}m ]`;
     }
 
@@ -241,7 +228,7 @@
     if (el) el.textContent = new Date().getFullYear();
   }
 
-  // --- Preview grid population (featured items) ---
+  // --- Preview grid population ---
   function initPreviewGrid() {
     const grid = document.getElementById('preview-grid');
     if (!grid || typeof window.AbyssalShopData === 'undefined') return;
@@ -268,7 +255,302 @@
     });
   }
 
-  // --- Expose particle burst globally ---
+  // --- Lightning strike effect ---
+  function initLightning() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = `
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9993;
+      opacity: 0;
+    `;
+    document.body.appendChild(canvas);
+
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const ctx = canvas.getContext('2d');
+
+    function drawBolt(x1, y1, x2, y2, spread, depth) {
+      if (depth <= 0) return;
+
+      const mx     = (x1 + x2) / 2 + (Math.random() - 0.5) * spread;
+      const my     = (y1 + y2) / 2 + (Math.random() - 0.5) * spread;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(mx, my);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = `rgba(220, 20, 60, ${0.15 + depth * 0.12})`;
+      ctx.lineWidth   = depth * 0.8;
+      ctx.shadowColor = '#8b0000';
+      ctx.shadowBlur  = 18;
+      ctx.stroke();
+
+      // Branch
+      if (Math.random() < 0.45 && depth > 1) {
+        const bx = mx + (Math.random() - 0.5) * spread * 2;
+        const by = my + Math.random() * spread * 2;
+        drawBolt(mx, my, bx, by, spread * 0.5, depth - 1);
+      }
+
+      drawBolt(x1, y1, mx, my, spread * 0.5, depth - 1);
+      drawBolt(mx, my, x2, y2, spread * 0.5, depth - 1);
+    }
+
+    function triggerLightning() {
+      const startX = Math.random() * canvas.width;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBolt(
+        startX, 0,
+        startX + (Math.random() - 0.5) * 300,
+        canvas.height * (0.4 + Math.random() * 0.5),
+        120, 5
+      );
+
+      canvas.style.opacity = '1';
+      if (window.AbyssalAudio) window.AbyssalAudio.playLightning();
+
+      // Flash sequence
+      let flashes = 0;
+      const maxFlashes = 2 + Math.floor(Math.random() * 3);
+      const flashInterval = setInterval(() => {
+        canvas.style.opacity = flashes % 2 === 0 ? '0' : '0.85';
+        flashes++;
+        if (flashes >= maxFlashes * 2) {
+          clearInterval(flashInterval);
+          canvas.style.opacity = '0';
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }, 60);
+    }
+
+    // Random lightning every 18-45 seconds
+    function scheduleLightning() {
+      const delay = 18000 + Math.random() * 27000;
+      setTimeout(() => {
+        triggerLightning();
+        scheduleLightning();
+      }, delay);
+    }
+
+    scheduleLightning();
+
+    // Expose for other modules
+    window.AbyssalEffects = window.AbyssalEffects || {};
+    window.AbyssalEffects.triggerLightning = triggerLightning;
+  }
+
+  // --- Falling embers / ash ---
+  function initFallingEmbers() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = `
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 85;
+    `;
+    document.body.appendChild(canvas);
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const ctx    = canvas.getContext('2d');
+    const embers = [];
+    const COUNT  = 55;
+
+    const emberColors = [
+      'rgba(139,  0,   0,',
+      'rgba(180,  20,  20,',
+      'rgba(80,   80,  80,',
+      'rgba(60,   60,  60,',
+      'rgba(220,  20,  60,',
+      'rgba(100,  100, 100,',
+    ];
+
+    for (let i = 0; i < COUNT; i++) {
+      embers.push(createEmber(canvas));
+    }
+
+    function createEmber(canvas, fromTop = false) {
+      return {
+        x:       Math.random() * canvas.width,
+        y:       fromTop ? -10 : Math.random() * canvas.height,
+        size:    0.8 + Math.random() * 2.5,
+        speedY:  0.3 + Math.random() * 0.8,
+        speedX:  (Math.random() - 0.5) * 0.4,
+        opacity: 0.1 + Math.random() * 0.55,
+        flicker: Math.random() * Math.PI * 2,
+        color:   emberColors[Math.floor(Math.random() * emberColors.length)],
+        wobble:  Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.01 + Math.random() * 0.02,
+      };
+    }
+
+    function drawEmbers() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      embers.forEach((e, idx) => {
+        e.flicker  += 0.04;
+        e.wobble   += e.wobbleSpeed;
+        e.y        += e.speedY;
+        e.x        += e.speedX + Math.sin(e.wobble) * 0.3;
+
+        const flicker = e.opacity * (0.7 + Math.sin(e.flicker) * 0.3);
+
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+        ctx.fillStyle = `${e.color}${flicker})`;
+        ctx.shadowColor = e.color + '0.8)';
+        ctx.shadowBlur  = e.size * 3;
+        ctx.fill();
+
+        // Reset when off screen
+        if (e.y > canvas.height + 10) {
+          embers[idx] = createEmber(canvas, true);
+          embers[idx].x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(drawEmbers);
+    }
+
+    drawEmbers();
+  }
+
+  // --- "You are not alone" counter ---
+  function initAloneCounter() {
+    const counter = document.createElement('div');
+    counter.id    = 'alone-counter';
+    counter.style.cssText = `
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: #3a0000;
+      letter-spacing: 0.15em;
+      z-index: 9000;
+      pointer-events: none;
+      line-height: 1.8;
+      transition: color 0.5s;
+    `;
+    counter.innerHTML = `
+      <div id="alone-status">CHECKING OCCUPANCY...</div>
+      <div id="alone-count" style="color:#5a0000;">— OBSERVERS PRESENT</div>
+    `;
+    document.body.appendChild(counter);
+
+    let count    = 0;
+    let maxCount = 8 + Math.floor(Math.random() * 24);
+
+    // Slowly increment the observer count
+    function incrementCount() {
+      if (count < maxCount) {
+        count++;
+        const countEl  = document.getElementById('alone-count');
+        const statusEl = document.getElementById('alone-status');
+        if (!countEl || !statusEl) return;
+
+        countEl.textContent  = `${count} OBSERVER${count !== 1 ? 'S' : ''} PRESENT`;
+        counter.style.color  = count > 10
+          ? 'rgba(139,0,0,0.7)'
+          : 'rgba(80,0,0,0.6)';
+        countEl.style.color  = count > 15
+          ? '#dc143c'
+          : count > 8
+            ? '#8b0000'
+            : '#5a0000';
+
+        statusEl.textContent = count > 15
+          ? 'YOU ARE NOT ALONE'
+          : count > 5
+            ? 'OTHERS ARE WATCHING'
+            : 'CHECKING OCCUPANCY...';
+      }
+
+      // Occasionally decrement to feel organic
+      if (Math.random() < 0.12 && count > 1) {
+        count--;
+        const countEl = document.getElementById('alone-count');
+        if (countEl) {
+          countEl.textContent = `${count} OBSERVER${count !== 1 ? 'S' : ''} PRESENT`;
+        }
+      }
+
+      const nextTick = 4000 + Math.random() * 8000;
+      setTimeout(incrementCount, nextTick);
+    }
+
+    setTimeout(incrementCount, 3000);
+  }
+
+  // --- Card text scramble on scroll into view ---
+  function initCardScrollScramble() {
+    const chars = '∅⊗⊘⌬⍙ᚠᚢ△▽◈!@#$%^&*';
+
+    function scrambleEl(el) {
+      if (el.dataset.scrambled) return;
+      el.dataset.scrambled = 'true';
+
+      const original = el.textContent;
+      let   ticks    = 0;
+      const max      = 8;
+
+      const interval = setInterval(() => {
+        el.textContent = original
+          .split('')
+          .map(c => c === ' ' ? ' '
+            : Math.random() < 0.5
+              ? chars[Math.floor(Math.random() * chars.length)]
+              : c)
+          .join('');
+        ticks++;
+        if (ticks >= max) {
+          clearInterval(interval);
+          el.textContent = original;
+        }
+      }, 55);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const card = entry.target;
+        const name = card.querySelector('.card-name, .card-title');
+        const desc = card.querySelector('.card-desc');
+        if (name) setTimeout(() => scrambleEl(name), 80);
+        if (desc) setTimeout(() => scrambleEl(desc), 200);
+        observer.unobserve(card);
+      });
+    }, { threshold: 0.2 });
+
+    // Observe all shop cards and preview cards
+    function observeCards() {
+      document.querySelectorAll('.shop-card, .preview-card').forEach(card => {
+        observer.observe(card);
+      });
+    }
+
+    // Cards may not exist yet on DOMContentLoaded — retry briefly
+    observeCards();
+    setTimeout(observeCards, 800);
+    setTimeout(observeCards, 2000);
+  }
+
+  // --- Expose globally ---
   window.AbyssalEffects = {
     spawnParticleBurst
   };
@@ -284,6 +566,10 @@
     initTypewriter();
     initFakeCoords();
     initFooterYear();
+    initLightning();
+    initFallingEmbers();
+    initAloneCounter();
+    initCardScrollScramble();
     setTimeout(initPreviewGrid, 100);
   }
 
