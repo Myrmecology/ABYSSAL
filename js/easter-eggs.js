@@ -1,7 +1,7 @@
 /* ============================================
    ABYSSAL — easter-eggs.js
-   Hidden interactions, secrets, Konami code
-   UPDATED: fixed cursor trail + animated crosshair
+   UPDATED: single unified RAF loop for
+   cursor trail + crosshair — no lag, no delay
    ============================================ */
 
 (function () {
@@ -46,7 +46,7 @@
     }, 8000);
   }
 
-  // --- Konami code listener ---
+  // --- Konami code ---
   function initKonami() {
     document.addEventListener('keydown', (e) => {
       if (e.key === KONAMI[konamiIndex]) {
@@ -238,195 +238,6 @@
     });
   }
 
-  // --- Animated crosshair cursor ---
-  function initCrosshair() {
-    // Hide default cursor site-wide
-    const style       = document.createElement('style');
-    style.textContent = `* { cursor: none !important; }`;
-    document.head.appendChild(style);
-
-    const cursor = document.createElement('div');
-    cursor.id    = 'abyssal-cursor';
-    cursor.style.cssText = `
-      position: fixed;
-      width: 28px;
-      height: 28px;
-      pointer-events: none;
-      z-index: 9999999;
-      transform: translate(-50%, -50%);
-      will-change: left, top;
-    `;
-
-    // SVG crosshair
-    cursor.innerHTML = `
-      <svg id="cursor-svg" width="28" height="28" viewBox="0 0 28 28"
-           xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-        <!-- Outer rotating ring -->
-        <circle id="cursor-ring-outer" cx="14" cy="14" r="12"
-          fill="none"
-          stroke="rgba(220,20,60,0.6)"
-          stroke-width="1"
-          stroke-dasharray="6 4"
-        />
-        <!-- Inner ring -->
-        <circle id="cursor-ring-inner" cx="14" cy="14" r="6"
-          fill="none"
-          stroke="rgba(255,60,60,0.9)"
-          stroke-width="1"
-        />
-        <!-- Crosshair lines -->
-        <line x1="14" y1="0"  x2="14" y2="7"
-          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
-        <line x1="14" y1="21" x2="14" y2="28"
-          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
-        <line x1="0"  y1="14" x2="7"  y2="14"
-          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
-        <line x1="21" y1="14" x2="28" y2="14"
-          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
-        <!-- Center dot -->
-        <circle cx="14" cy="14" r="1.5"
-          fill="rgba(255,60,60,1)"
-        />
-        <!-- Glow filter -->
-        <defs>
-          <filter id="cursor-glow">
-            <feGaussianBlur stdDeviation="1.5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-      </svg>
-    `;
-
-    document.body.appendChild(cursor);
-
-    // Track real cursor position — no lag on the crosshair itself
-    let cx = -100, cy = -100;
-    document.addEventListener('mousemove', (e) => {
-      cx = e.clientX;
-      cy = e.clientY;
-    });
-
-    // Animate crosshair
-    let angle      = 0;
-    let breathScale = 1;
-    let breathDir   = 1;
-    let breathT     = 0;
-
-    function animateCursor() {
-      // Snap crosshair directly to cursor — zero lag
-      cursor.style.left = cx + 'px';
-      cursor.style.top  = cy + 'px';
-
-      // Rotate outer ring
-      angle += 0.6;
-      const outerRing = document.getElementById('cursor-ring-outer');
-      if (outerRing) {
-        outerRing.setAttribute('transform', `rotate(${angle}, 14, 14)`);
-      }
-
-      // Counter-rotate inner ring
-      const innerRing = document.getElementById('cursor-ring-inner');
-      if (innerRing) {
-        innerRing.setAttribute('transform', `rotate(${-angle * 0.5}, 14, 14)`);
-      }
-
-      // Breathe scale
-      breathT     += 0.025;
-      breathScale  = 1.0 + Math.sin(breathT) * 0.12;
-      const svg    = document.getElementById('cursor-svg');
-      if (svg) {
-        svg.style.transform = `scale(${breathScale})`;
-      }
-
-      requestAnimationFrame(animateCursor);
-    }
-
-    animateCursor();
-
-    // Pulse on click
-    document.addEventListener('mousedown', () => {
-      const svg = document.getElementById('cursor-svg');
-      if (svg) {
-        svg.style.transform = 'scale(0.7)';
-        setTimeout(() => { svg.style.transform = ''; }, 150);
-      }
-    });
-  }
-
-  // --- Cursor trail (fixed — stays with cursor) ---
-  function initCursorTrail() {
-    const trail = [];
-    const COUNT = 12;
-
-    const colors = [
-      '255, 30,  30',
-      '220, 20,  60',
-      '180, 0,   0',
-      '139, 0,   0',
-      '100, 0,   0',
-    ];
-
-    for (let i = 0; i < COUNT; i++) {
-      const dot      = document.createElement('div');
-      const colorIdx = Math.floor((i / COUNT) * colors.length);
-      const baseSize = Math.max(2, 10 - i * 0.65);
-      const opacity  = Math.max(0.08, 0.95 - i * 0.075);
-
-      dot.style.cssText = `
-        position: fixed;
-        width: ${baseSize}px;
-        height: ${baseSize}px;
-        background: rgba(${colors[colorIdx]}, ${opacity});
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999990;
-        box-shadow:
-          0 0 ${baseSize * 2}px rgba(255, 30, 30, ${opacity * 0.9}),
-          0 0 ${baseSize * 4}px rgba(220, 20, 60, ${opacity * 0.6}),
-          0 0 ${baseSize * 7}px rgba(139, 0,  0,  ${opacity * 0.3});
-        mix-blend-mode: screen;
-        transform: translate(-50%, -50%);
-        will-change: left, top;
-      `;
-      document.body.appendChild(dot);
-      trail.push({ el: dot, x: -100, y: -100 });
-    }
-
-    // Real cursor position — updated instantly
-    let mouseX = -100;
-    let mouseY = -100;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    function animateTrail() {
-      // Dot 0 chases the real cursor very tightly
-      // Each subsequent dot chases the one before it
-      // This keeps the head of the trail glued to the cursor
-      trail[0].x += (mouseX - trail[0].x) * 0.75;
-      trail[0].y += (mouseY - trail[0].y) * 0.75;
-      trail[0].el.style.left = trail[0].x + 'px';
-      trail[0].el.style.top  = trail[0].y + 'px';
-
-      for (let i = 1; i < trail.length; i++) {
-        const lag = 0.45 - i * 0.028;
-        trail[i].x += (trail[i - 1].x - trail[i].x) * Math.max(lag, 0.12);
-        trail[i].y += (trail[i - 1].y - trail[i].y) * Math.max(lag, 0.12);
-        trail[i].el.style.left = trail[i].x + 'px';
-        trail[i].el.style.top  = trail[i].y + 'px';
-      }
-
-      requestAnimationFrame(animateTrail);
-    }
-
-    animateTrail();
-  }
-
   // --- Symbol sequence easter egg ---
   function initSymbolSequence() {
     const TARGET_SEQUENCE = ['⊕', '△', 'ᚠ'];
@@ -460,6 +271,187 @@
     }, 800);
   }
 
+  // =============================================
+  // UNIFIED CURSOR SYSTEM
+  // One single RAF loop handles both the
+  // crosshair and the trail — zero contention
+  // =============================================
+
+  // Shared mouse state
+  let mouseX = -200;
+  let mouseY = -200;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }, { passive: true });
+
+  // --- Build crosshair ---
+  function buildCrosshair() {
+    // Hide system cursor everywhere
+    const style       = document.createElement('style');
+    style.textContent = `* { cursor: none !important; }`;
+    document.head.appendChild(style);
+
+    const el  = document.createElement('div');
+    el.id     = 'abyssal-cursor';
+    el.style.cssText = `
+      position: fixed;
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+      z-index: 9999999;
+      transform: translate(-50%, -50%);
+      will-change: left, top;
+      left: -200px;
+      top: -200px;
+    `;
+
+    el.innerHTML = `
+      <svg id="cursor-svg" width="28" height="28"
+           viewBox="0 0 28 28"
+           xmlns="http://www.w3.org/2000/svg"
+           style="overflow:visible; display:block;">
+        <circle id="cursor-ring-outer" cx="14" cy="14" r="12"
+          fill="none"
+          stroke="rgba(220,20,60,0.6)"
+          stroke-width="1"
+          stroke-dasharray="6 4"
+        />
+        <circle id="cursor-ring-inner" cx="14" cy="14" r="6"
+          fill="none"
+          stroke="rgba(255,60,60,0.9)"
+          stroke-width="1"
+        />
+        <line x1="14" y1="0"  x2="14" y2="7"
+          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
+        <line x1="14" y1="21" x2="14" y2="28"
+          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
+        <line x1="0"  y1="14" x2="7"  y2="14"
+          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
+        <line x1="21" y1="14" x2="28" y2="14"
+          stroke="rgba(255,40,40,0.85)" stroke-width="1"/>
+        <circle cx="14" cy="14" r="1.5"
+          fill="rgba(255,60,60,1)"
+        />
+      </svg>
+    `;
+
+    document.body.appendChild(el);
+
+    // Click pulse
+    document.addEventListener('mousedown', () => {
+      const svg = document.getElementById('cursor-svg');
+      if (svg) {
+        svg.style.transition = 'transform 0.08s ease';
+        svg.style.transform  = 'scale(0.65)';
+        setTimeout(() => {
+          svg.style.transform = 'scale(1)';
+        }, 120);
+      }
+    }, { passive: true });
+
+    return el;
+  }
+
+  // --- Build trail dots ---
+  function buildTrail() {
+    const trail  = [];
+    const COUNT  = 10;
+    const colors = [
+      '255, 30,  30',
+      '220, 20,  60',
+      '180, 0,   0',
+      '139, 0,   0',
+      '100, 0,   0',
+    ];
+
+    for (let i = 0; i < COUNT; i++) {
+      const colorIdx = Math.floor((i / COUNT) * colors.length);
+      const baseSize = Math.max(2, 9 - i * 0.65);
+      const opacity  = Math.max(0.06, 0.9 - i * 0.08);
+
+      const dot = document.createElement('div');
+      dot.style.cssText = `
+        position: fixed;
+        width: ${baseSize}px;
+        height: ${baseSize}px;
+        background: rgba(${colors[colorIdx]}, ${opacity});
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999990;
+        box-shadow:
+          0 0 ${baseSize * 2}px rgba(255,30,30,${opacity * 0.9}),
+          0 0 ${baseSize * 4}px rgba(220,20,60,${opacity * 0.55}),
+          0 0 ${baseSize * 6}px rgba(139,0,0,${opacity * 0.25});
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        will-change: left, top;
+        left: -200px;
+        top: -200px;
+      `;
+      document.body.appendChild(dot);
+      trail.push({ el: dot, x: -200, y: -200 });
+    }
+
+    return trail;
+  }
+
+  // --- Unified cursor RAF loop ---
+  function initUnifiedCursorLoop(crosshair, trail) {
+    let angle  = 0;
+    let breathT = 0;
+
+    function loop() {
+      // ---- Crosshair: snap directly to mouse ----
+      crosshair.style.left = mouseX + 'px';
+      crosshair.style.top  = mouseY + 'px';
+
+      // Rotate rings
+      angle   += 0.55;
+      breathT += 0.022;
+
+      const outerRing = document.getElementById('cursor-ring-outer');
+      const innerRing = document.getElementById('cursor-ring-inner');
+      const svg       = document.getElementById('cursor-svg');
+
+      if (outerRing) outerRing.setAttribute('transform', `rotate(${angle}, 14, 14)`);
+      if (innerRing) innerRing.setAttribute('transform', `rotate(${-angle * 0.5}, 14, 14)`);
+
+      // Breathe scale on SVG
+      if (svg && !svg.style.transition) {
+        const s = 1.0 + Math.sin(breathT) * 0.10;
+        svg.style.transform = `scale(${s})`;
+      }
+
+      // ---- Trail: each dot chases the one before ----
+      // Dot 0 chases real mouse very tightly
+      trail[0].x += (mouseX - trail[0].x) * 0.72;
+      trail[0].y += (mouseY - trail[0].y) * 0.72;
+      trail[0].el.style.left = trail[0].x + 'px';
+      trail[0].el.style.top  = trail[0].y + 'px';
+
+      for (let i = 1; i < trail.length; i++) {
+        const lag  = Math.max(0.38 - i * 0.025, 0.10);
+        trail[i].x += (trail[i - 1].x - trail[i].x) * lag;
+        trail[i].y += (trail[i - 1].y - trail[i].y) * lag;
+        trail[i].el.style.left = trail[i].x + 'px';
+        trail[i].el.style.top  = trail[i].y + 'px';
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  // --- Wire it all together ---
+  function initCursorSystem() {
+    const crosshair = buildCrosshair();
+    const trail     = buildTrail();
+    initUnifiedCursorLoop(crosshair, trail);
+  }
+
   // --- Boot ---
   function init() {
     initKonami();
@@ -469,8 +461,7 @@
     initIdleWatcher();
     initWhisperLink();
     initAboutLink();
-    initCrosshair();
-    initCursorTrail();
+    initCursorSystem();
     initSymbolSequence();
   }
 

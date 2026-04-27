@@ -1,8 +1,8 @@
 /* ============================================
    ABYSSAL — effects.js
-   Drip, particles, scan sweep, breathing page,
-   lightning, falling embers, alone counter,
-   card scramble on scroll
+   UPDATED: performance optimized
+   Single RAF loop, no body transform,
+   reduced repaints, consolidated intervals
    ============================================ */
 
 (function () {
@@ -31,7 +31,7 @@
       drip.style.left              = x + '%';
       drip.style.width             = width + 'px';
       drip.style.animationDuration = duration + 's';
-      drip.style.animationDelay   = delay + 's';
+      drip.style.animationDelay    = delay + 's';
 
       const reds = [
         'linear-gradient(to bottom, #8b0000, transparent)',
@@ -47,14 +47,14 @@
       }, (duration + delay + 0.5) * 1000);
     }
 
-    setInterval(spawnDrip, 600 + Math.random() * 800);
-    for (let i = 0; i < 6; i++) setTimeout(spawnDrip, i * 300);
+    setInterval(spawnDrip, 800);
+    for (let i = 0; i < 4; i++) setTimeout(spawnDrip, i * 400);
   }
 
   // --- Blood drip from top of viewport ---
   function initTopDrips() {
     function spawnTopDrip() {
-      const drip      = document.createElement('div');
+      const drip          = document.createElement('div');
       drip.classList.add('drip');
       drip.style.position = 'fixed';
       drip.style.top      = '0';
@@ -76,7 +76,7 @@
       }, (duration + 0.5) * 1000);
     }
 
-    setInterval(spawnTopDrip, 2200 + Math.random() * 2000);
+    setInterval(spawnTopDrip, 3500);
   }
 
   // --- Particle burst on click ---
@@ -87,7 +87,7 @@
     });
   }
 
-  function spawnParticleBurst(x, y, count = 10) {
+  function spawnParticleBurst(x, y, count = 8) {
     for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
       p.style.cssText = `
@@ -100,6 +100,7 @@
         border-radius: 50%;
         pointer-events: none;
         z-index: 99990;
+        will-change: transform, opacity;
         transform: translate(-50%, -50%);
       `;
       document.body.appendChild(p);
@@ -128,30 +129,13 @@
     }
   }
 
-  // --- Breathing body effect ---
-  function initBodyBreathing() {
-    let t = 0;
-    function breathe() {
-      t += 0.004;
-      const scale = 1 + Math.sin(t) * 0.004;
-      document.body.style.transform = `scale(${scale})`;
-      requestAnimationFrame(breathe);
-    }
-    breathe();
-  }
+  // --- REMOVED: body breathing (was causing full page repaints) ---
 
-  // --- Flicker lights animation ---
+  // --- Flicker lights ---
+  // Use CSS animation only — no JS style changes
   function initFlickerLights() {
-    const lights = document.querySelectorAll('.flicker-light');
-    lights.forEach(light => {
-      setInterval(() => {
-        const opacity = 0.4 + Math.random() * 0.6;
-        const x       = (Math.random() - 0.5) * 30;
-        const y       = (Math.random() - 0.5) * 30;
-        light.style.transform = `translate(${x}px, ${y}px)`;
-        light.style.opacity   = opacity.toString();
-      }, 800 + Math.random() * 1200);
-    });
+    // Lights are handled entirely by CSS animation keyframes
+    // No JS interval needed — removing this was a major perf win
   }
 
   // --- Typewriter hero line ---
@@ -219,7 +203,7 @@
     }
 
     randomCoord();
-    setInterval(randomCoord, 3500);
+    setInterval(randomCoord, 4000);
   }
 
   // --- Footer year ---
@@ -255,7 +239,7 @@
     });
   }
 
-  // --- Lightning strike effect ---
+  // --- Lightning strike ---
   function initLightning() {
     const canvas = document.createElement('canvas');
     canvas.style.cssText = `
@@ -265,35 +249,35 @@
       pointer-events: none;
       z-index: 9993;
       opacity: 0;
+      will-change: opacity;
     `;
     document.body.appendChild(canvas);
 
-    function resizeCanvas() {
+    function resize() {
       canvas.width  = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    resize();
+    window.addEventListener('resize', resize);
 
     const ctx = canvas.getContext('2d');
 
     function drawBolt(x1, y1, x2, y2, spread, depth) {
       if (depth <= 0) return;
 
-      const mx     = (x1 + x2) / 2 + (Math.random() - 0.5) * spread;
-      const my     = (y1 + y2) / 2 + (Math.random() - 0.5) * spread;
+      const mx = (x1 + x2) / 2 + (Math.random() - 0.5) * spread;
+      const my = (y1 + y2) / 2 + (Math.random() - 0.5) * spread;
 
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(mx, my);
       ctx.lineTo(x2, y2);
-      ctx.strokeStyle = `rgba(220, 20, 60, ${0.15 + depth * 0.12})`;
+      ctx.strokeStyle = `rgba(220,20,60,${0.15 + depth * 0.12})`;
       ctx.lineWidth   = depth * 0.8;
       ctx.shadowColor = '#8b0000';
       ctx.shadowBlur  = 18;
       ctx.stroke();
 
-      // Branch
       if (Math.random() < 0.45 && depth > 1) {
         const bx = mx + (Math.random() - 0.5) * spread * 2;
         const by = my + Math.random() * spread * 2;
@@ -306,7 +290,6 @@
 
     function triggerLightning() {
       const startX = Math.random() * canvas.width;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBolt(
         startX, 0,
@@ -318,7 +301,6 @@
       canvas.style.opacity = '1';
       if (window.AbyssalAudio) window.AbyssalAudio.playLightning();
 
-      // Flash sequence
       let flashes = 0;
       const maxFlashes = 2 + Math.floor(Math.random() * 3);
       const flashInterval = setInterval(() => {
@@ -332,9 +314,8 @@
       }, 60);
     }
 
-    // Random lightning every 18-45 seconds
     function scheduleLightning() {
-      const delay = 18000 + Math.random() * 27000;
+      const delay = 20000 + Math.random() * 30000;
       setTimeout(() => {
         triggerLightning();
         scheduleLightning();
@@ -343,12 +324,11 @@
 
     scheduleLightning();
 
-    // Expose for other modules
     window.AbyssalEffects = window.AbyssalEffects || {};
     window.AbyssalEffects.triggerLightning = triggerLightning;
   }
 
-  // --- Falling embers / ash ---
+  // --- Falling embers (optimized — single canvas, reduced count) ---
   function initFallingEmbers() {
     const canvas = document.createElement('canvas');
     canvas.style.cssText = `
@@ -357,6 +337,7 @@
       width: 100%; height: 100%;
       pointer-events: none;
       z-index: 85;
+      will-change: transform;
     `;
     document.body.appendChild(canvas);
 
@@ -369,7 +350,7 @@
 
     const ctx    = canvas.getContext('2d');
     const embers = [];
-    const COUNT  = 55;
+    const COUNT  = 30; // reduced from 55
 
     const emberColors = [
       'rgba(139,  0,   0,',
@@ -377,57 +358,29 @@
       'rgba(80,   80,  80,',
       'rgba(60,   60,  60,',
       'rgba(220,  20,  60,',
-      'rgba(100,  100, 100,',
     ];
 
-    for (let i = 0; i < COUNT; i++) {
-      embers.push(createEmber(canvas));
-    }
-
-    function createEmber(canvas, fromTop = false) {
+    function createEmber(fromTop = false) {
       return {
-        x:       Math.random() * canvas.width,
-        y:       fromTop ? -10 : Math.random() * canvas.height,
-        size:    0.8 + Math.random() * 2.5,
-        speedY:  0.3 + Math.random() * 0.8,
-        speedX:  (Math.random() - 0.5) * 0.4,
-        opacity: 0.1 + Math.random() * 0.55,
-        flicker: Math.random() * Math.PI * 2,
-        color:   emberColors[Math.floor(Math.random() * emberColors.length)],
-        wobble:  Math.random() * Math.PI * 2,
-        wobbleSpeed: 0.01 + Math.random() * 0.02,
+        x:           Math.random() * canvas.width,
+        y:           fromTop ? -10 : Math.random() * canvas.height,
+        size:        0.8 + Math.random() * 2.2,
+        speedY:      0.3 + Math.random() * 0.7,
+        speedX:      (Math.random() - 0.5) * 0.35,
+        opacity:     0.1 + Math.random() * 0.5,
+        flicker:     Math.random() * Math.PI * 2,
+        color:       emberColors[Math.floor(Math.random() * emberColors.length)],
+        wobble:      Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.01 + Math.random() * 0.018,
       };
     }
 
-    function drawEmbers() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < COUNT; i++) embers.push(createEmber(false));
 
-      embers.forEach((e, idx) => {
-        e.flicker  += 0.04;
-        e.wobble   += e.wobbleSpeed;
-        e.y        += e.speedY;
-        e.x        += e.speedX + Math.sin(e.wobble) * 0.3;
-
-        const flicker = e.opacity * (0.7 + Math.sin(e.flicker) * 0.3);
-
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
-        ctx.fillStyle = `${e.color}${flicker})`;
-        ctx.shadowColor = e.color + '0.8)';
-        ctx.shadowBlur  = e.size * 3;
-        ctx.fill();
-
-        // Reset when off screen
-        if (e.y > canvas.height + 10) {
-          embers[idx] = createEmber(canvas, true);
-          embers[idx].x = Math.random() * canvas.width;
-        }
-      });
-
-      requestAnimationFrame(drawEmbers);
-    }
-
-    drawEmbers();
+    // Embers share the global RAF loop
+    window._AbyssalEmbers     = embers;
+    window._AbyssalEmberCtx   = ctx;
+    window._AbyssalEmberCanvas = canvas;
   }
 
   // --- "You are not alone" counter ---
@@ -445,7 +398,6 @@
       z-index: 9000;
       pointer-events: none;
       line-height: 1.8;
-      transition: color 0.5s;
     `;
     counter.innerHTML = `
       <div id="alone-status">CHECKING OCCUPANCY...</div>
@@ -456,48 +408,33 @@
     let count    = 0;
     let maxCount = 8 + Math.floor(Math.random() * 24);
 
-    // Slowly increment the observer count
     function incrementCount() {
-      if (count < maxCount) {
-        count++;
-        const countEl  = document.getElementById('alone-count');
-        const statusEl = document.getElementById('alone-status');
-        if (!countEl || !statusEl) return;
+      if (count < maxCount) count++;
 
-        countEl.textContent  = `${count} OBSERVER${count !== 1 ? 'S' : ''} PRESENT`;
-        counter.style.color  = count > 10
-          ? 'rgba(139,0,0,0.7)'
-          : 'rgba(80,0,0,0.6)';
-        countEl.style.color  = count > 15
-          ? '#dc143c'
-          : count > 8
-            ? '#8b0000'
-            : '#5a0000';
+      if (Math.random() < 0.12 && count > 1) count--;
 
-        statusEl.textContent = count > 15
-          ? 'YOU ARE NOT ALONE'
-          : count > 5
-            ? 'OTHERS ARE WATCHING'
-            : 'CHECKING OCCUPANCY...';
-      }
+      const countEl  = document.getElementById('alone-count');
+      const statusEl = document.getElementById('alone-status');
+      if (!countEl || !statusEl) return;
 
-      // Occasionally decrement to feel organic
-      if (Math.random() < 0.12 && count > 1) {
-        count--;
-        const countEl = document.getElementById('alone-count');
-        if (countEl) {
-          countEl.textContent = `${count} OBSERVER${count !== 1 ? 'S' : ''} PRESENT`;
-        }
-      }
+      countEl.textContent  = `${count} OBSERVER${count !== 1 ? 'S' : ''} PRESENT`;
+      counter.style.color  = count > 10
+        ? 'rgba(139,0,0,0.7)'
+        : 'rgba(80,0,0,0.6)';
+      countEl.style.color  = count > 15
+        ? '#dc143c'
+        : count > 8 ? '#8b0000' : '#5a0000';
+      statusEl.textContent = count > 15
+        ? 'YOU ARE NOT ALONE'
+        : count > 5 ? 'OTHERS ARE WATCHING' : 'CHECKING OCCUPANCY...';
 
-      const nextTick = 4000 + Math.random() * 8000;
-      setTimeout(incrementCount, nextTick);
+      setTimeout(incrementCount, 5000 + Math.random() * 9000);
     }
 
-    setTimeout(incrementCount, 3000);
+    setTimeout(incrementCount, 4000);
   }
 
-  // --- Card text scramble on scroll into view ---
+  // --- Card scramble on scroll ---
   function initCardScrollScramble() {
     const chars = '∅⊗⊘⌬⍙ᚠᚢ△▽◈!@#$%^&*';
 
@@ -537,17 +474,62 @@
       });
     }, { threshold: 0.2 });
 
-    // Observe all shop cards and preview cards
     function observeCards() {
       document.querySelectorAll('.shop-card, .preview-card').forEach(card => {
         observer.observe(card);
       });
     }
 
-    // Cards may not exist yet on DOMContentLoaded — retry briefly
     observeCards();
     setTimeout(observeCards, 800);
     setTimeout(observeCards, 2000);
+  }
+
+  // --- Master RAF loop (embers only — keeps frame budget tight) ---
+  function initMasterLoop() {
+    function loop() {
+      const canvas = window._AbyssalEmberCanvas;
+      const ctx    = window._AbyssalEmberCtx;
+      const embers = window._AbyssalEmbers;
+
+      if (canvas && ctx && embers) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        embers.forEach((e, idx) => {
+          e.flicker  += 0.035;
+          e.wobble   += e.wobbleSpeed;
+          e.y        += e.speedY;
+          e.x        += e.speedX + Math.sin(e.wobble) * 0.25;
+
+          const flicker = e.opacity * (0.7 + Math.sin(e.flicker) * 0.3);
+
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+          ctx.fillStyle  = `${e.color}${flicker})`;
+          ctx.shadowColor = e.color + '0.6)';
+          ctx.shadowBlur  = e.size * 2;
+          ctx.fill();
+
+          if (e.y > canvas.height + 10) {
+            embers[idx]   = {
+              x:           Math.random() * canvas.width,
+              y:           -10,
+              size:        0.8 + Math.random() * 2.2,
+              speedY:      0.3 + Math.random() * 0.7,
+              speedX:      (Math.random() - 0.5) * 0.35,
+              opacity:     0.1 + Math.random() * 0.5,
+              flicker:     Math.random() * Math.PI * 2,
+              color:       window._AbyssalEmbers[idx].color,
+              wobble:      Math.random() * Math.PI * 2,
+              wobbleSpeed: 0.01 + Math.random() * 0.018,
+            };
+          }
+        });
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
   }
 
   // --- Expose globally ---
@@ -561,7 +543,6 @@
     initDrips();
     initTopDrips();
     initClickParticles();
-    initBodyBreathing();
     initFlickerLights();
     initTypewriter();
     initFakeCoords();
@@ -570,6 +551,7 @@
     initFallingEmbers();
     initAloneCounter();
     initCardScrollScramble();
+    initMasterLoop();
     setTimeout(initPreviewGrid, 100);
   }
 
