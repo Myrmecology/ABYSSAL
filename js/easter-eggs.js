@@ -1,6 +1,7 @@
 /* ============================================
    ABYSSAL — easter-eggs.js
    Hidden interactions, secrets, Konami code
+   UPDATED: brighter cursor trail
    ============================================ */
 
 (function () {
@@ -37,12 +38,10 @@
 
     if (window.AbyssalAudio) window.AbyssalAudio.playEasterEgg();
 
-    // Close on click
     overlay.addEventListener('click', () => {
       overlay.classList.remove('active');
     }, { once: true });
 
-    // Auto close after 8 seconds
     setTimeout(() => {
       overlay.classList.remove('active');
     }, 8000);
@@ -65,21 +64,15 @@
 
   function triggerKonamiEgg() {
     if (window.AbyssalAudio) window.AbyssalAudio.playGlitch();
-
-    // Full page static burst
     document.body.classList.add('static-burst');
     setTimeout(() => document.body.classList.remove('static-burst'), 600);
-
-    // Then show message
     setTimeout(() => {
       showEgg('KONAMI SEQUENCE ACCEPTED.\n\nThis changes nothing.\n\nOr everything.\n\nWe have not decided yet.');
     }, 700);
-
-    // Scramble all text briefly
     scramblePageText();
   }
 
-  // --- Hidden dot trigger (bottom right) ---
+  // --- Hidden dot trigger ---
   function initDotTrigger() {
     const dot = document.getElementById('egg-trigger');
     if (!dot) return;
@@ -88,7 +81,6 @@
     dot.addEventListener('click', () => {
       clickCount++;
       if (window.AbyssalAudio) window.AbyssalAudio.playHover();
-
       if (clickCount === 3) {
         clickCount = 0;
         const msg = eggMessages[eggIndex % eggMessages.length];
@@ -98,7 +90,7 @@
     });
   }
 
-  // --- Logo click sequence (click ABYSSAL title 5 times) ---
+  // --- Logo click sequence ---
   function initLogoSequence() {
     const logo = document.querySelector('.header-glitch');
     if (!logo) return;
@@ -109,10 +101,8 @@
     logo.addEventListener('click', () => {
       clicks++;
       if (window.AbyssalAudio) window.AbyssalAudio.playHover();
-
       clearTimeout(timer);
       timer = setTimeout(() => { clicks = 0; }, 3000);
-
       if (clicks >= 5) {
         clicks = 0;
         clearTimeout(timer);
@@ -123,8 +113,6 @@
 
   function triggerLogoEgg() {
     if (window.AbyssalAudio) window.AbyssalAudio.playGlitch();
-
-    // Invert the page briefly
     document.body.style.filter = 'invert(1)';
     setTimeout(() => {
       document.body.style.filter = '';
@@ -132,7 +120,7 @@
     }, 500);
   }
 
-  // --- Warning block hold (hold click for 3 seconds) ---
+  // --- Warning block hold ---
   function initWarningHold() {
     const warning = document.querySelector('.warning-block');
     if (!warning) return;
@@ -146,7 +134,6 @@
         if (holding) triggerWarningEgg();
       }, 3000);
     });
-
     warning.addEventListener('mouseup',    () => { holding = false; clearTimeout(holdTimer); });
     warning.addEventListener('mouseleave', () => { holding = false; clearTimeout(holdTimer); });
   }
@@ -156,7 +143,7 @@
     showEgg('YOU HELD ON.\n\nMost people let go.\n\nWe have noted your persistence.\n\nIt has been added to your file.');
   }
 
-  // --- Idle watcher (no movement for 30 seconds) ---
+  // --- Idle watcher ---
   function initIdleWatcher() {
     let idleTimer = null;
     let triggered = false;
@@ -175,12 +162,10 @@
     ['mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
       document.addEventListener(evt, resetIdle);
     });
-
     resetIdle();
   }
 
   function triggerIdleEgg() {
-    // Typewriter-style slow reveal
     const overlay = document.getElementById('egg-overlay');
     const msgEl   = document.getElementById('egg-message');
     if (!overlay || !msgEl) return;
@@ -188,7 +173,6 @@
     const msg = 'YOU STOPPED MOVING.\n\nWe noticed immediately.\n\nAre you still there?\n\n...Good.';
     msgEl.textContent = '';
     overlay.classList.add('active');
-
     if (window.AbyssalAudio) window.AbyssalAudio.playEasterEgg();
 
     let i = 0;
@@ -207,11 +191,10 @@
     }, { once: true });
   }
 
-  // --- Secret nav link: WHISPER ---
+  // --- Whisper link ---
   function initWhisperLink() {
     const link = document.getElementById('nav-whisper');
     if (!link) return;
-
     link.addEventListener('click', (e) => {
       e.preventDefault();
       if (window.AbyssalAudio) window.AbyssalAudio.playEasterEgg();
@@ -219,11 +202,10 @@
     });
   }
 
-  // --- Secret nav link: ABOUT THE VOID ---
+  // --- About link ---
   function initAboutLink() {
     const link = document.getElementById('nav-about');
     if (!link) return;
-
     link.addEventListener('click', (e) => {
       e.preventDefault();
       if (window.AbyssalAudio) window.AbyssalAudio.playGlitch();
@@ -257,51 +239,74 @@
     });
   }
 
-  // --- Cursor trail ---
+  // --- Cursor trail (UPDATED — much brighter) ---
   function initCursorTrail() {
     const trail = [];
-    const COUNT = 8;
+    const COUNT = 12;
+
+    const colors = [
+      '255, 30,  30',
+      '220, 20,  60',
+      '180, 0,   0',
+      '139, 0,   0',
+      '100, 0,   0',
+    ];
 
     for (let i = 0; i < COUNT; i++) {
-      const dot = document.createElement('div');
+      const dot       = document.createElement('div');
+      const colorIdx  = Math.floor((i / COUNT) * colors.length);
+      const baseSize  = Math.max(2, 11 - i * 0.7);
+      const opacity   = Math.max(0.08, 1.0 - i * 0.075);
+
       dot.style.cssText = `
         position: fixed;
-        width: ${4 - i * 0.3}px;
-        height: ${4 - i * 0.3}px;
-        background: rgba(139,0,0,${0.6 - i * 0.06});
+        width: ${baseSize}px;
+        height: ${baseSize}px;
+        background: rgba(${colors[colorIdx]}, ${opacity});
         border-radius: 50%;
         pointer-events: none;
         z-index: 999999;
-        transition: transform 0.05s;
+        box-shadow:
+          0 0 ${baseSize * 2}px rgba(255, 30, 30, ${opacity * 0.9}),
+          0 0 ${baseSize * 4}px rgba(220, 20, 60, ${opacity * 0.6}),
+          0 0 ${baseSize * 7}px rgba(139, 0, 0,   ${opacity * 0.3});
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        will-change: left, top;
       `;
       document.body.appendChild(dot);
       trail.push({ el: dot, x: 0, y: 0 });
     }
 
-    let mouseX = 0, mouseY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
 
     function animateTrail() {
-      let lx = mouseX, ly = mouseY;
+      let lx = mouseX;
+      let ly = mouseY;
+
       trail.forEach((dot, i) => {
-        const speed = 1 - i * 0.08;
-        dot.x += (lx - dot.x) * (0.35 - i * 0.02);
-        dot.y += (ly - dot.y) * (0.35 - i * 0.02);
+        const lag  = 0.32 - i * 0.018;
+        dot.x     += (lx - dot.x) * Math.max(lag, 0.05);
+        dot.y     += (ly - dot.y) * Math.max(lag, 0.05);
         dot.el.style.left = dot.x + 'px';
         dot.el.style.top  = dot.y + 'px';
         lx = dot.x;
         ly = dot.y;
       });
+
       requestAnimationFrame(animateTrail);
     }
 
     animateTrail();
   }
 
-  // --- Secret symbol order (click 3 specific symbols in order) ---
+  // --- Symbol sequence easter egg ---
   function initSymbolSequence() {
     const TARGET_SEQUENCE = ['⊕', '△', 'ᚠ'];
     let sequence = [];
