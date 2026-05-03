@@ -1,0 +1,423 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — components.css
+   Buttons, avatars, cards, badges, dropdowns,
+   modals, toasts. Built once. Used everywhere.
+   ============================================ */
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+/* --- Primary Button --- */
+.mc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mc-space-2);
+  padding: var(--mc-space-2) var(--mc-space-5);
+  height: 36px;
+  background: var(--mc-blue-core);
+  color: var(--mc-white);
+  font-family: var(--mc-font-ui);
+  font-size: var(--mc-text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  border-radius: var(--mc-radius-md);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background var(--mc-dur-fast) var(--mc-ease),
+    box-shadow var(--mc-dur-fast) var(--mc-ease),
+    transform var(--mc-dur-fast) var(--mc-ease);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mc-btn:hover {
+  background: var(--mc-blue-bright);
+  box-shadow: var(--mc-shadow-blue);
+  transform: translateY(-1px);
+}
+
+.mc-btn:active {
+  transform: translateY(0px);
+  box-shadow: none;
+}
+
+.mc-btn .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-btn:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* --- Ghost Button --- */
+.mc-btn--ghost {
+  background: transparent;
+  color: var(--mc-white-dim);
+  border-color: var(--mc-border-soft);
+}
+
+.mc-btn--ghost:hover {
+  background: var(--mc-raised);
+  color: var(--mc-white);
+  box-shadow: none;
+  border-color: var(--mc-white-ghost);
+}
+
+/* --- Danger Button --- */
+.mc-btn--danger {
+  background: var(--mc-red-core);
+  color: var(--mc-white);
+}
+
+.mc-btn--danger:hover {
+  background: var(--mc-red-bright);
+  box-shadow: var(--mc-shadow-red);
+}
+
+/* --- Small Button --- */
+.mc-btn--sm {
+  height: 28px;
+  padding: 0 var(--mc-space-3);
+  font-size: var(--mc-text-xs);
+}
+
+/* --- Full Width Button --- */
+.mc-btn--full {
+  width: 100%;
+}
+
+/* --- Follow Button (toggle state) --- */
+.mc-btn--follow {
+  background: transparent;
+  color: var(--mc-blue-core);
+  border-color: var(--mc-blue-core);
+}
+
+.mc-btn--follow:hover {
+  background: var(--mc-blue-glow);
+  box-shadow: none;
+}
+
+.mc-btn--follow.is-following {
+  background: var(--mc-blue-core);
+  color: var(--mc-white);
+}
+
+.mc-btn--follow.is-following:hover {
+  background: var(--mc-red-core);
+  border-color: var(--mc-red-core);
+  color: var(--mc-white);
+}
+
+/* ============================================
+   AVATARS
+   ============================================ */
+
+.mc-avatar {
+  border-radius: var(--mc-radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--mc-surface);
+  border: 2px solid var(--mc-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mc-font-display);
+  font-weight: 600;
+  color: var(--mc-white-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.mc-avatar--xs  { width: 24px;  height: 24px;  font-size: 0.55rem; }
+.mc-avatar--sm  { width: 36px;  height: 36px;  font-size: 0.75rem; }
+.mc-avatar--md  { width: 48px;  height: 48px;  font-size: 1rem;    }
+.mc-avatar--lg  { width: 72px;  height: 72px;  font-size: 1.4rem;  }
+.mc-avatar--xl  { width: 96px;  height: 96px;  font-size: 1.8rem;  }
+.mc-avatar--2xl { width: 128px; height: 128px; font-size: 2.4rem;  }
+
+/* Avatar color variants — each fake user gets one */
+.mc-avatar--c0 { background: #0d1f3c; border-color: #1a3a6e; color: #4a90d9; }
+.mc-avatar--c1 { background: #1a0d2e; border-color: #3a1a5e; color: #9b59b6; }
+.mc-avatar--c2 { background: #0d2e1a; border-color: #1a5e3a; color: #27ae60; }
+.mc-avatar--c3 { background: #2e1a0d; border-color: #5e3a1a; color: #e67e22; }
+.mc-avatar--c4 { background: #2e0d0d; border-color: #5e1a1a; color: #e74c3c; }
+.mc-avatar--c5 { background: #0d2e2e; border-color: #1a5e5e; color: #1abc9c; }
+.mc-avatar--c6 { background: #1a1a0d; border-color: #3a3a1a; color: #f1c40f; }
+.mc-avatar--c7 { background: #1a0d1a; border-color: #3a1a3a; color: #e91e8c; }
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.mc-card {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+  transition:
+    border-color var(--mc-dur-base) var(--mc-ease),
+    box-shadow var(--mc-dur-base) var(--mc-ease);
+}
+
+.mc-card:hover {
+  border-color: var(--mc-border-soft);
+}
+
+.mc-card--flush {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+}
+
+.mc-card--glow-blue:hover {
+  border-color: var(--mc-blue-dim);
+  box-shadow: var(--mc-shadow-blue);
+}
+
+.mc-card--glow-red:hover {
+  border-color: var(--mc-red-dim);
+  box-shadow: var(--mc-shadow-red);
+}
+
+/* ============================================
+   BADGES & PILLS
+   ============================================ */
+
+.mc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-1);
+  padding: 2px var(--mc-space-2);
+  border-radius: var(--mc-radius-full);
+  font-size: var(--mc-text-xs);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.mc-pill--blue {
+  background: var(--mc-blue-glow);
+  color: var(--mc-blue-bright);
+  border: 1px solid var(--mc-blue-dim);
+}
+
+.mc-pill--red {
+  background: var(--mc-red-glow);
+  color: var(--mc-red-bright);
+  border: 1px solid var(--mc-red-mid);
+}
+
+.mc-pill--ghost {
+  background: transparent;
+  color: var(--mc-white-ghost);
+  border: 1px solid var(--mc-border);
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+.mc-toast-wrap {
+  position: fixed;
+  bottom: var(--mc-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-2);
+  z-index: var(--mc-z-modal);
+  pointer-events: none;
+}
+
+.mc-toast {
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-border-soft);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-3) var(--mc-space-5);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  box-shadow: var(--mc-shadow-lg);
+  animation: mcToastIn var(--mc-dur-slow) var(--mc-ease-out) both;
+  pointer-events: all;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+}
+
+.mc-toast--red {
+  border-color: var(--mc-red-mid);
+  color: var(--mc-red-bright);
+}
+
+.mc-toast--blue {
+  border-color: var(--mc-blue-dim);
+  color: var(--mc-blue-bright);
+}
+
+@keyframes mcToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+
+.mc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: var(--mc-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mc-space-4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mc-dur-base) var(--mc-ease);
+}
+
+.mc-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mc-modal {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border-soft);
+  border-radius: var(--mc-radius-lg);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--mc-shadow-lg);
+  transform: translateY(16px) scale(0.97);
+  transition: transform var(--mc-dur-base) var(--mc-ease);
+  overflow: hidden;
+}
+
+.mc-modal-backdrop.is-open .mc-modal {
+  transform: translateY(0) scale(1);
+}
+
+.mc-modal-header {
+  padding: var(--mc-space-5) var(--mc-space-6);
+  border-bottom: 1px solid var(--mc-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mc-modal-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-md);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--mc-white);
+  text-transform: uppercase;
+}
+
+.mc-modal-body {
+  padding: var(--mc-space-6);
+}
+
+/* ============================================
+   DROPDOWN
+   ============================================ */
+
+.mc-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.mc-dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--mc-space-2));
+  right: 0;
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-border-soft);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-2) 0;
+  min-width: 180px;
+  z-index: var(--mc-z-dropdown);
+  box-shadow: var(--mc-shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--mc-dur-fast) var(--mc-ease),
+    transform var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-dropdown-menu.is-open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.mc-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+  padding: var(--mc-space-2) var(--mc-space-4);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  cursor: pointer;
+  transition: background var(--mc-dur-fast) var(--mc-ease);
+  width: 100%;
+  text-align: left;
+}
+
+.mc-dropdown-item:hover {
+  background: var(--mc-surface);
+  color: var(--mc-white);
+}
+
+.mc-dropdown-item--danger {
+  color: var(--mc-red-bright);
+}
+
+.mc-dropdown-item--danger:hover {
+  background: var(--mc-red-glow);
+}
+
+.mc-dropdown-divider {
+  height: 1px;
+  background: var(--mc-border);
+  margin: var(--mc-space-2) 0;
+}
+
+/* ============================================
+   SKELETON LOADER
+   ============================================ */
+
+.mc-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--mc-surface) 25%,
+    var(--mc-raised)  50%,
+    var(--mc-surface) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--mc-radius-md);
+  animation: mcSkeleton 1.6s var(--mc-ease) infinite;
+}
+
+@keyframes mcSkeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

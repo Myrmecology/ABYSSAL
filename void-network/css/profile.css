@@ -1,0 +1,380 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — profile.css
+   Profile header, cover, stats, tabs,
+   user post grid, about panel.
+   ============================================ */
+
+/* ============================================
+   PROFILE COVER
+   ============================================ */
+
+.mc-profile-cover {
+  width: 100%;
+  height: 220px;
+  background: var(--mc-raised);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--mc-radius-lg) var(--mc-radius-lg) 0 0;
+}
+
+.mc-profile-cover-inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--mc-deep)      0%,
+    var(--mc-blue-dim)  40%,
+    var(--mc-red-dim)   70%,
+    var(--mc-deep)      100%
+  );
+  position: relative;
+}
+
+/* Subtle animated gradient shimmer on cover */
+.mc-profile-cover-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent         0%,
+    rgba(59,130,246,0.06) 50%,
+    transparent         100%
+  );
+  animation: mcCoverShimmer 6s var(--mc-ease) infinite;
+}
+
+@keyframes mcCoverShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Noise grain on cover */
+.mc-profile-cover-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* ============================================
+   PROFILE HEADER CARD
+   ============================================ */
+
+.mc-profile-header {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--mc-space-4);
+}
+
+.mc-profile-header-body {
+  padding: 0 var(--mc-space-6) var(--mc-space-6);
+  position: relative;
+}
+
+/* Avatar — overlaps cover */
+.mc-profile-avatar-wrap {
+  position: relative;
+  margin-top: -52px;
+  margin-bottom: var(--mc-space-3);
+  display: inline-block;
+}
+
+.mc-profile-avatar-wrap .mc-avatar {
+  border: 4px solid var(--mc-surface);
+  box-shadow: var(--mc-shadow-md);
+}
+
+/* Online indicator */
+.mc-profile-status {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--mc-radius-full);
+  background: var(--mc-red-core);
+  border: 2px solid var(--mc-surface);
+  animation: mcPulse 2.4s var(--mc-ease) infinite;
+}
+
+.mc-profile-status--online {
+  background: #22c55e;
+}
+
+/* --- Profile Actions Row --- */
+.mc-profile-actions {
+  position: absolute;
+  top: var(--mc-space-4);
+  right: var(--mc-space-6);
+  display: flex;
+  gap: var(--mc-space-2);
+  align-items: center;
+}
+
+/* --- Name & Handle --- */
+.mc-profile-name {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-xl);
+  font-weight: 600;
+  color: var(--mc-white);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.mc-profile-handle {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--mc-space-4);
+}
+
+/* --- Bio --- */
+.mc-profile-bio {
+  font-size: var(--mc-text-base);
+  color: var(--mc-white-dim);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: var(--mc-space-4);
+}
+
+/* Unsettling detail — some bios have a faint second line */
+.mc-profile-bio-ghost {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+  margin-top: var(--mc-space-2);
+  font-style: italic;
+}
+
+/* --- Profile Meta Row --- */
+.mc-profile-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mc-space-4);
+  margin-bottom: var(--mc-space-5);
+}
+
+.mc-profile-meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.06em;
+}
+
+.mc-profile-meta-item-icon {
+  font-size: var(--mc-text-sm);
+  opacity: 0.6;
+}
+
+/* --- Stats Row --- */
+.mc-profile-stats {
+  display: flex;
+  gap: var(--mc-space-6);
+}
+
+.mc-profile-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+  transition: opacity var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-profile-stat:hover {
+  opacity: 0.75;
+}
+
+.mc-profile-stat-value {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-lg);
+  font-weight: 600;
+  color: var(--mc-white);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.mc-profile-stat-label {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   PROFILE TABS
+   ============================================ */
+
+.mc-profile-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--mc-border);
+  background: var(--mc-surface);
+  border-radius: 0 0 var(--mc-radius-lg) var(--mc-radius-lg);
+  padding: 0 var(--mc-space-4);
+}
+
+.mc-profile-tab {
+  padding: var(--mc-space-4) var(--mc-space-5);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-ghost);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  letter-spacing: 0.04em;
+  transition:
+    color var(--mc-dur-fast) var(--mc-ease),
+    border-color var(--mc-dur-fast) var(--mc-ease);
+  font-family: var(--mc-font-ui);
+  position: relative;
+}
+
+.mc-profile-tab:hover {
+  color: var(--mc-white-dim);
+}
+
+.mc-profile-tab.is-active {
+  color: var(--mc-white);
+  border-bottom-color: var(--mc-blue-core);
+}
+
+.mc-profile-tab .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-profile-tab:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* ============================================
+   PROFILE CONTENT PANELS
+   ============================================ */
+
+.mc-profile-panel {
+  display: none;
+}
+
+.mc-profile-panel.is-active {
+  display: block;
+  animation: mcFadeIn var(--mc-dur-base) var(--mc-ease-out) both;
+}
+
+/* ============================================
+   POST GRID (media tab)
+   ============================================ */
+
+.mc-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+}
+
+.mc-post-grid-item {
+  aspect-ratio: 1;
+  background: var(--mc-raised);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.mc-post-grid-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-post-grid-item:hover::after {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Gradient placeholder for grid cells */
+.mc-post-grid-item--c0 { background: linear-gradient(135deg, #0d1f3c, #1a3a6e); }
+.mc-post-grid-item--c1 { background: linear-gradient(135deg, #1a0d2e, #3a1a5e); }
+.mc-post-grid-item--c2 { background: linear-gradient(135deg, #0d2e1a, #1a5e3a); }
+.mc-post-grid-item--c3 { background: linear-gradient(135deg, #2e1a0d, #5e3a1a); }
+.mc-post-grid-item--c4 { background: linear-gradient(135deg, #2e0d0d, #5e1a1a); }
+.mc-post-grid-item--c5 { background: linear-gradient(135deg, #0d2e2e, #1a5e5e); }
+
+/* ============================================
+   ABOUT PANEL
+   ============================================ */
+
+.mc-about-panel {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-5);
+}
+
+.mc-about-section-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--mc-white-muted);
+  text-transform: uppercase;
+  margin-bottom: var(--mc-space-3);
+}
+
+.mc-about-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mc-space-3);
+  padding: var(--mc-space-2) 0;
+}
+
+.mc-about-row + .mc-about-row {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-about-icon {
+  font-size: var(--mc-text-md);
+  color: var(--mc-white-ghost);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.mc-about-label {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.mc-about-value {
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+}
+
+/* Unsettling — member since date that doesn't make sense */
+.mc-about-value--wrong {
+  font-family: var(--mc-font-mono);
+  color: var(--mc-white-ghost);
+  font-style: italic;
+  font-size: var(--mc-text-xs);
+}

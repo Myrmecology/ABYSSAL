@@ -1,0 +1,340 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — animations.css
+   All keyframes, transitions, and motion
+   that make the site feel alive and wrong.
+   ============================================ */
+
+/* ============================================
+   GLOBAL ENTRANCE ANIMATIONS
+   ============================================ */
+
+@keyframes mcFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mcFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mcFadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes mcSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes mcSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   AMBIENT MOTION
+   ============================================ */
+
+/* Pulse — used on live dots, status rings */
+@keyframes mcPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+/* Breathe — slow scale oscillation */
+@keyframes mcBreathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.012); }
+}
+
+/* Float — gentle vertical drift */
+@keyframes mcFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Drift — used on corridor background elements */
+@keyframes mcDrift {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  33%  { transform: translate(4px, -6px) rotate(0.5deg); }
+  66%  { transform: translate(-3px, 3px) rotate(-0.4deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* ============================================
+   NOISE & TEXTURE MOTION
+   ============================================ */
+
+@keyframes mcNoiseShift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-1%, -1%); }
+  50%  { transform: translate(1%, 0); }
+  75%  { transform: translate(0, 1%); }
+  100% { transform: translate(-1%, 0); }
+}
+
+/* ============================================
+   GLITCH EFFECTS
+   Applied by JS — classes toggled on elements
+   ============================================ */
+
+/* Horizontal slice glitch */
+@keyframes mcGlitchH {
+  0%   { clip-path: inset(40% 0 60% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(10% 0 85% 0); transform: translate(4px, 0); }
+  40%  { clip-path: inset(70% 0 5% 0);  transform: translate(-2px, 0); }
+  60%  { clip-path: inset(30% 0 55% 0); transform: translate(3px, 0); }
+  80%  { clip-path: inset(55% 0 25% 0); transform: translate(-4px, 0); }
+  100% { clip-path: inset(40% 0 60% 0); transform: translate(0, 0); }
+}
+
+/* Color channel split */
+@keyframes mcGlitchR {
+  0%, 100% { transform: translate(0, 0); opacity: 0; }
+  10%       { transform: translate(-3px, 1px); opacity: 0.6; }
+  30%       { transform: translate(3px, -1px); opacity: 0.4; }
+  50%       { transform: translate(-2px, 2px); opacity: 0.7; }
+  70%       { transform: translate(2px, -2px); opacity: 0.3; }
+  90%       { transform: translate(-1px, 1px); opacity: 0.5; }
+}
+
+/* Glitch class — applied to text elements */
+.mc-glitch {
+  position: relative;
+}
+
+.mc-glitch::before,
+.mc-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mc-glitch::before {
+  color: var(--mc-red-bright);
+  animation: mcGlitchH 0.4s var(--mc-ease-in) both,
+             mcGlitchR  0.4s var(--mc-ease-in) both;
+  opacity: 0;
+}
+
+.mc-glitch::after {
+  color: var(--mc-blue-bright);
+  animation: mcGlitchH 0.4s var(--mc-ease-in) 0.05s both,
+             mcGlitchR  0.4s var(--mc-ease-in) 0.05s both;
+  opacity: 0;
+}
+
+.mc-glitch.is-glitching::before,
+.mc-glitch.is-glitching::after {
+  opacity: 1;
+}
+
+/* ============================================
+   TEXT TYPEWRITER
+   JS drives this via JS — CSS provides
+   the cursor and overflow clip
+   ============================================ */
+
+.mc-typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--mc-blue-core);
+  animation: mcCursorBlink 1s steps(1) infinite;
+  display: inline-block;
+}
+
+.mc-typewriter--done {
+  border-right-color: transparent;
+  animation: none;
+}
+
+@keyframes mcCursorBlink {
+  0%, 100% { border-right-color: var(--mc-blue-core); }
+  50%       { border-right-color: transparent; }
+}
+
+/* ============================================
+   NUMBER FLICKER
+   Counts that are never quite stable
+   ============================================ */
+
+@keyframes mcCountFlicker {
+  0%, 90%, 100% { opacity: 1; }
+  92%            { opacity: 0.2; }
+  94%            { opacity: 1; }
+  96%            { opacity: 0.4; }
+}
+
+.mc-count-flicker {
+  animation: mcCountFlicker 6s var(--mc-ease) infinite;
+}
+
+/* ============================================
+   NOTIFICATION DROP
+   New notification arrives from above
+   ============================================ */
+
+@keyframes mcNotifDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mc-notif-drop {
+  animation: mcNotifDrop var(--mc-dur-slow) var(--mc-ease-out) both;
+}
+
+/* ============================================
+   POST ARRIVE
+   Feed posts surface from below
+   ============================================ */
+
+@keyframes mcPostArrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mc-post-arrive {
+  animation: mcPostArrive var(--mc-dur-slow) var(--mc-ease-out) both;
+}
+
+/* Staggered delay classes for feed */
+.mc-delay-1 { animation-delay: 0.05s; }
+.mc-delay-2 { animation-delay: 0.10s; }
+.mc-delay-3 { animation-delay: 0.15s; }
+.mc-delay-4 { animation-delay: 0.20s; }
+.mc-delay-5 { animation-delay: 0.25s; }
+.mc-delay-6 { animation-delay: 0.30s; }
+
+/* ============================================
+   HEART POP
+   Like button reaction
+   ============================================ */
+
+@keyframes mcHeartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.5); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.mc-heart-pop {
+  animation: mcHeartPop 0.35s var(--mc-ease-out) both;
+}
+
+/* ============================================
+   SKELETON SHIMMER
+   ============================================ */
+
+@keyframes mcSkeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================
+   TOAST IN
+   ============================================ */
+
+@keyframes mcToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   CORRIDOR SPECIFIC
+   ============================================ */
+
+@keyframes mcCorridorRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes mcCorridorGlyphIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-8deg);
+    filter: drop-shadow(0 0 0px rgba(59, 130, 246, 0));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.4));
+  }
+}
+
+@keyframes mcCoverShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes mcScanLine {
+  from { top: -2px; }
+  to   { top: 100vh; }
+}
+
+/* ============================================
+   UTILITY ANIMATION CLASSES
+   ============================================ */
+
+.mc-anim-fade-in       { animation: mcFadeIn      var(--mc-dur-slow) var(--mc-ease-out) both; }
+.mc-anim-fade-in-down  { animation: mcFadeInDown  var(--mc-dur-slow) var(--mc-ease-out) both; }
+.mc-anim-fade-in-scale { animation: mcFadeInScale var(--mc-dur-slow) var(--mc-ease-out) both; }
+.mc-anim-slide-left    { animation: mcSlideInLeft var(--mc-dur-slow) var(--mc-ease-out) both; }
+.mc-anim-slide-right   { animation: mcSlideInRight var(--mc-dur-slow) var(--mc-ease-out) both; }
+.mc-anim-breathe       { animation: mcBreathe 4s  var(--mc-ease) infinite; }
+.mc-anim-float         { animation: mcFloat   5s  var(--mc-ease) infinite; }
+.mc-anim-drift         { animation: mcDrift   12s var(--mc-ease) infinite; }
+.mc-anim-pulse         { animation: mcPulse   2.4s var(--mc-ease) infinite; }

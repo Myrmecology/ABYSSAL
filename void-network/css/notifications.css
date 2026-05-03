@@ -1,0 +1,378 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — notifications.css
+   Notification feed, filter tabs, items,
+   the unsettling system alerts layer.
+   ============================================ */
+
+/* ============================================
+   NOTIFICATIONS SHELL
+   ============================================ */
+
+.mc-notif-page {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+  animation: mcFadeIn var(--mc-dur-slow) var(--mc-ease-out) both;
+}
+
+/* --- Page Header --- */
+.mc-notif-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mc-space-5) var(--mc-space-6);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-notif-page-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-xl);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--mc-white);
+  text-transform: uppercase;
+}
+
+.mc-notif-mark-all {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-blue-core);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+}
+
+.mc-notif-mark-all:hover {
+  color: var(--mc-blue-bright);
+}
+
+.mc-notif-mark-all .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-notif-mark-all:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* ============================================
+   FILTER TABS
+   ============================================ */
+
+.mc-notif-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--mc-border);
+  padding: 0 var(--mc-space-4);
+  background: var(--mc-surface);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mc-notif-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mc-notif-tab {
+  padding: var(--mc-space-4) var(--mc-space-4);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-ghost);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition:
+    color var(--mc-dur-fast) var(--mc-ease),
+    border-color var(--mc-dur-fast) var(--mc-ease);
+  font-family: var(--mc-font-ui);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+}
+
+.mc-notif-tab:hover {
+  color: var(--mc-white-dim);
+}
+
+.mc-notif-tab.is-active {
+  color: var(--mc-white);
+  border-bottom-color: var(--mc-blue-core);
+}
+
+.mc-notif-tab .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-notif-tab:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+.mc-notif-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--mc-red-core);
+  color: var(--mc-white);
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: var(--mc-radius-full);
+  font-family: var(--mc-font-mono);
+}
+
+/* ============================================
+   NOTIFICATION LIST
+   ============================================ */
+
+.mc-notif-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Notification Item --- */
+.mc-notif-item {
+  display: flex;
+  gap: var(--mc-space-4);
+  align-items: flex-start;
+  padding: var(--mc-space-4) var(--mc-space-6);
+  position: relative;
+  cursor: pointer;
+  transition: background var(--mc-dur-fast) var(--mc-ease);
+  animation: mcFadeIn var(--mc-dur-base) var(--mc-ease-out) both;
+}
+
+.mc-notif-item + .mc-notif-item {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-notif-item:hover {
+  background: var(--mc-raised);
+}
+
+/* Unread indicator strip */
+.mc-notif-item--unread {
+  background: var(--mc-blue-pulse);
+}
+
+.mc-notif-item--unread::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--mc-blue-core);
+  border-radius: 0 var(--mc-radius-sm) var(--mc-radius-sm) 0;
+}
+
+/* System alert — red strip */
+.mc-notif-item--system {
+  background: var(--mc-red-glow);
+}
+
+.mc-notif-item--system::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--mc-red-core);
+  border-radius: 0 var(--mc-radius-sm) var(--mc-radius-sm) 0;
+}
+
+/* --- Notification Icon --- */
+.mc-notif-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--mc-radius-full);
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--mc-text-md);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Type-specific icon colors */
+.mc-notif-icon-wrap--like   { color: var(--mc-red-bright);   border-color: var(--mc-red-dim);  }
+.mc-notif-icon-wrap--follow { color: var(--mc-blue-bright);  border-color: var(--mc-blue-dim); }
+.mc-notif-icon-wrap--comment{ color: var(--mc-white-muted);  }
+.mc-notif-icon-wrap--share  { color: var(--mc-white-muted);  }
+.mc-notif-icon-wrap--system { color: var(--mc-red-bright);   border-color: var(--mc-red-mid);
+                               animation: mcPulse 1.8s var(--mc-ease) infinite; }
+
+/* --- Notification Body --- */
+.mc-notif-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-notif-text {
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  line-height: 1.6;
+  margin-bottom: var(--mc-space-1);
+}
+
+.mc-notif-text strong {
+  color: var(--mc-white);
+  font-weight: 600;
+}
+
+/* The unsettling part — system messages look almost right */
+.mc-notif-text--system {
+  color: var(--mc-red-bright);
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  letter-spacing: 0.06em;
+  line-height: 1.8;
+}
+
+.mc-notif-time {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.08em;
+}
+
+/* Wrong time — impossible timestamps */
+.mc-notif-time--wrong {
+  color: var(--mc-red-bright);
+  opacity: 0.55;
+}
+
+/* --- Notification Excerpt (preview of post) --- */
+.mc-notif-excerpt {
+  margin-top: var(--mc-space-2);
+  padding: var(--mc-space-2) var(--mc-space-3);
+  background: var(--mc-raised);
+  border-left: 2px solid var(--mc-border-soft);
+  border-radius: 0 var(--mc-radius-sm) var(--mc-radius-sm) 0;
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ============================================
+   DATE GROUP LABEL
+   ============================================ */
+
+.mc-notif-date-group {
+  padding: var(--mc-space-3) var(--mc-space-6);
+  background: var(--mc-black);
+  border-top: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-notif-date-label {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.mc-notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mc-space-16) var(--mc-space-8);
+  text-align: center;
+  gap: var(--mc-space-3);
+}
+
+.mc-notif-empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.25;
+  margin-bottom: var(--mc-space-2);
+}
+
+.mc-notif-empty-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-lg);
+  color: var(--mc-white-muted);
+  letter-spacing: 0.08em;
+}
+
+.mc-notif-empty-sub {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.1em;
+  line-height: 1.8;
+  max-width: 280px;
+}
+
+/* ============================================
+   LIVE ALERT BANNER
+   Drops in from top — ambient JS fires this
+   ============================================ */
+
+.mc-live-alert {
+  position: fixed;
+  top: calc(var(--mc-nav-height) + var(--mc-space-3));
+  left: 50%;
+  transform: translateX(-50%) translateY(-12px);
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-red-mid);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-3) var(--mc-space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-red-bright);
+  box-shadow: var(--mc-shadow-red);
+  z-index: var(--mc-z-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--mc-dur-base) var(--mc-ease),
+    transform var(--mc-dur-base) var(--mc-ease);
+  white-space: nowrap;
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.06em;
+}
+
+.mc-live-alert.is-visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mc-live-alert-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--mc-radius-full);
+  background: var(--mc-red-core);
+  flex-shrink: 0;
+  animation: mcPulse 1.2s var(--mc-ease) infinite;
+}

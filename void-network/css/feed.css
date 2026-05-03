@@ -1,0 +1,510 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — feed.css
+   Compose box, post cards, reactions,
+   story rail, trending. The main feed.
+   ============================================ */
+
+/* ============================================
+   STORY RAIL
+   ============================================ */
+
+.mc-story-rail {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-4);
+  display: flex;
+  gap: var(--mc-space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mc-story-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.mc-story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mc-space-2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mc-story-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--mc-radius-full);
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    var(--mc-blue-core),
+    var(--mc-red-core)
+  );
+  transition: transform var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-story-ring:hover {
+  transform: scale(1.06);
+}
+
+.mc-story-ring--unseen {
+  background: linear-gradient(
+    135deg,
+    var(--mc-blue-bright),
+    var(--mc-red-bright)
+  );
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+}
+
+.mc-story-ring--seen {
+  background: var(--mc-border);
+}
+
+.mc-story-avatar-wrap {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--mc-radius-full);
+  border: 2px solid var(--mc-black);
+  overflow: hidden;
+}
+
+.mc-story-name {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-muted);
+  text-align: center;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   COMPOSE BOX
+   ============================================ */
+
+.mc-compose {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-3);
+  transition: border-color var(--mc-dur-base) var(--mc-ease);
+}
+
+.mc-compose:focus-within {
+  border-color: var(--mc-border-soft);
+}
+
+.mc-compose-top {
+  display: flex;
+  gap: var(--mc-space-3);
+  align-items: flex-start;
+}
+
+.mc-compose-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-size: var(--mc-text-base);
+  color: var(--mc-white-dim);
+  line-height: 1.6;
+  min-height: 56px;
+  padding: var(--mc-space-2) 0;
+  font-family: var(--mc-font-ui);
+}
+
+.mc-compose-textarea:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.mc-compose-textarea::placeholder {
+  color: var(--mc-white-ghost);
+}
+
+.mc-compose-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--mc-space-3);
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-compose-actions {
+  display: flex;
+  gap: var(--mc-space-2);
+}
+
+.mc-compose-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--mc-radius-md);
+  background: transparent;
+  color: var(--mc-white-ghost);
+  font-size: var(--mc-text-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--mc-dur-fast) var(--mc-ease),
+    color var(--mc-dur-fast) var(--mc-ease);
+  cursor: pointer;
+  border: none;
+  position: relative;
+}
+
+.mc-compose-action-btn:hover {
+  background: var(--mc-raised);
+  color: var(--mc-blue-bright);
+}
+
+.mc-compose-action-btn .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-compose-action-btn:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+.mc-compose-char-count {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.08em;
+}
+
+.mc-compose-char-count.is-warning {
+  color: var(--mc-red-bright);
+}
+
+/* ============================================
+   POST CARD
+   ============================================ */
+
+.mc-post {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+  transition:
+    border-color var(--mc-dur-base) var(--mc-ease),
+    transform var(--mc-dur-slow) var(--mc-ease);
+  animation: mcFadeIn var(--mc-dur-slow) var(--mc-ease-out) both;
+}
+
+.mc-post:hover {
+  border-color: var(--mc-border-soft);
+  transform: translateY(-1px);
+}
+
+/* --- Post Header --- */
+.mc-post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--mc-space-4) var(--mc-space-5) 0;
+}
+
+.mc-post-identity {
+  display: flex;
+  gap: var(--mc-space-3);
+  align-items: center;
+}
+
+.mc-post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mc-post-name {
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  color: var(--mc-white);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-post-name:hover {
+  color: var(--mc-blue-bright);
+}
+
+.mc-post-handle {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.06em;
+}
+
+.mc-post-time {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+/* --- Post Body --- */
+.mc-post-body {
+  padding: var(--mc-space-3) var(--mc-space-5);
+  font-size: var(--mc-text-base);
+  color: var(--mc-white-dim);
+  line-height: 1.7;
+}
+
+/* Subtle wrongness — occasionally italic phrases */
+.mc-post-body em {
+  font-style: italic;
+  color: var(--mc-white-muted);
+}
+
+/* --- Post Image --- */
+.mc-post-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--mc-raised);
+  overflow: hidden;
+  position: relative;
+}
+
+.mc-post-image-inner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--mc-dur-slow) var(--mc-ease);
+}
+
+.mc-post:hover .mc-post-image-inner {
+  transform: scale(1.02);
+}
+
+/* --- Post Tag --- */
+.mc-post-tag {
+  display: inline-block;
+  margin: 0 var(--mc-space-5) var(--mc-space-3);
+}
+
+/* --- Post Footer / Reactions --- */
+.mc-post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mc-space-3) var(--mc-space-5) var(--mc-space-4);
+  border-top: 1px solid var(--mc-border);
+  margin-top: var(--mc-space-2);
+}
+
+.mc-post-reactions {
+  display: flex;
+  gap: var(--mc-space-1);
+}
+
+.mc-reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+  padding: var(--mc-space-2) var(--mc-space-3);
+  border-radius: var(--mc-radius-md);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-ghost);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition:
+    color var(--mc-dur-fast) var(--mc-ease),
+    background var(--mc-dur-fast) var(--mc-ease);
+  font-family: var(--mc-font-ui);
+}
+
+.mc-reaction-btn:hover {
+  background: var(--mc-raised);
+  color: var(--mc-white-dim);
+}
+
+/* Like — active state */
+.mc-reaction-btn--like.is-active {
+  color: var(--mc-red-bright);
+}
+
+.mc-reaction-btn--like.is-active .mc-reaction-icon {
+  animation: mcHeartPop 0.3s var(--mc-ease-out);
+}
+
+/* Comment */
+.mc-reaction-btn--comment:hover {
+  color: var(--mc-blue-bright);
+}
+
+/* Share */
+.mc-reaction-btn--share:hover {
+  color: var(--mc-white);
+}
+
+.mc-reaction-btn .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-reaction-btn:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+.mc-reaction-count {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  letter-spacing: 0.06em;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+@keyframes mcHeartPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* ============================================
+   FEED FILTER TABS
+   ============================================ */
+
+.mc-feed-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-1);
+}
+
+.mc-feed-tab {
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-ghost);
+  border-radius: var(--mc-radius-md);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition:
+    background var(--mc-dur-fast) var(--mc-ease),
+    color var(--mc-dur-fast) var(--mc-ease);
+  letter-spacing: 0.04em;
+  position: relative;
+}
+
+.mc-feed-tab:hover {
+  color: var(--mc-white-dim);
+}
+
+.mc-feed-tab.is-active {
+  background: var(--mc-raised);
+  color: var(--mc-white);
+}
+
+.mc-feed-tab .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-feed-tab:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* ============================================
+   SIDEBAR — WHO TO FOLLOW
+   ============================================ */
+
+.mc-who-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+  padding: var(--mc-space-2) 0;
+}
+
+.mc-who-item + .mc-who-item {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-who-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-who-name {
+  font-size: var(--mc-text-sm);
+  font-weight: 500;
+  color: var(--mc-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  display: block;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-who-name:hover {
+  color: var(--mc-blue-bright);
+}
+
+.mc-who-handle {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  font-family: var(--mc-font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================
+   SIDEBAR — TRENDING
+   ============================================ */
+
+.mc-trending-item {
+  padding: var(--mc-space-3) 0;
+  cursor: pointer;
+  transition: opacity var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-trending-item + .mc-trending-item {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-trending-item:hover {
+  opacity: 0.8;
+}
+
+.mc-trending-rank {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.mc-trending-tag {
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  color: var(--mc-white);
+  letter-spacing: 0.02em;
+}
+
+.mc-trending-count {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  margin-top: 2px;
+}

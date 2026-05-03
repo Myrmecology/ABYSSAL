@@ -1,0 +1,482 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — post.css
+   Single post view, expanded comment thread,
+   comment input, related posts, share panel.
+   ============================================ */
+
+/* ============================================
+   SINGLE POST HERO
+   ============================================ */
+
+.mc-single-post {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--mc-space-4);
+  animation: mcFadeIn var(--mc-dur-slow) var(--mc-ease-out) both;
+}
+
+/* --- Post Top Bar --- */
+.mc-single-post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mc-space-5) var(--mc-space-6);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-single-post-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-4);
+}
+
+.mc-single-post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mc-single-post-name {
+  font-size: var(--mc-text-md);
+  font-weight: 600;
+  color: var(--mc-white);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-single-post-name:hover {
+  color: var(--mc-blue-bright);
+}
+
+.mc-single-post-handle {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.08em;
+}
+
+/* --- Post Body --- */
+.mc-single-post-body {
+  padding: var(--mc-space-6);
+}
+
+.mc-single-post-text {
+  font-size: var(--mc-text-md);
+  color: var(--mc-white-dim);
+  line-height: 1.75;
+  margin-bottom: var(--mc-space-5);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Corrupted word styling — applied by JS randomly */
+.mc-corrupted {
+  color: var(--mc-white-ghost);
+  font-style: italic;
+  letter-spacing: 0.12em;
+  text-decoration: underline;
+  text-decoration-color: var(--mc-red-mid);
+  text-decoration-style: wavy;
+  cursor: help;
+}
+
+/* --- Post Timestamp Full --- */
+.mc-single-post-timestamp {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+  padding: var(--mc-space-4) 0;
+  border-top: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-single-post-time-full {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.1em;
+}
+
+/* Wrong timestamp — subtly off */
+.mc-single-post-time-full--wrong {
+  color: var(--mc-red-bright);
+  opacity: 0.6;
+}
+
+/* --- Reaction Summary Row --- */
+.mc-single-post-reaction-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mc-space-4) 0;
+}
+
+.mc-reaction-summary-left {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.06em;
+}
+
+.mc-reaction-summary-icons {
+  display: flex;
+  gap: 2px;
+  font-size: var(--mc-text-sm);
+}
+
+.mc-reaction-summary-right {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-reaction-summary-right:hover {
+  color: var(--mc-white-dim);
+}
+
+/* --- Full Reaction Bar --- */
+.mc-single-post-reactions {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-1);
+  padding: var(--mc-space-3) 0;
+  border-top: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+/* ============================================
+   COMMENT THREAD
+   ============================================ */
+
+.mc-comment-thread {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+}
+
+.mc-comment-thread-header {
+  padding: var(--mc-space-4) var(--mc-space-5);
+  border-bottom: 1px solid var(--mc-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mc-comment-thread-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--mc-white-muted);
+  text-transform: uppercase;
+}
+
+.mc-comment-thread-sort {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+  position: relative;
+}
+
+.mc-comment-thread-sort:hover {
+  color: var(--mc-white-dim);
+}
+
+.mc-comment-thread-sort .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-comment-thread-sort:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* --- Comment Compose --- */
+.mc-comment-compose {
+  display: flex;
+  gap: var(--mc-space-3);
+  align-items: flex-start;
+  padding: var(--mc-space-4) var(--mc-space-5);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-comment-input-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.mc-comment-input {
+  width: 100%;
+  padding: var(--mc-space-3) var(--mc-space-4);
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-full);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  resize: none;
+  min-height: 42px;
+  max-height: 120px;
+  overflow-y: auto;
+  transition:
+    border-color var(--mc-dur-fast) var(--mc-ease),
+    box-shadow var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-comment-input:focus {
+  border-color: var(--mc-blue-mid);
+  box-shadow: 0 0 0 3px var(--mc-blue-glow);
+  border-radius: var(--mc-radius-lg);
+}
+
+/* --- Comment Item --- */
+.mc-comment {
+  display: flex;
+  gap: var(--mc-space-3);
+  padding: var(--mc-space-4) var(--mc-space-5);
+  transition: background var(--mc-dur-fast) var(--mc-ease);
+  animation: mcFadeIn var(--mc-dur-base) var(--mc-ease-out) both;
+}
+
+.mc-comment + .mc-comment {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-comment:hover {
+  background: var(--mc-raised);
+}
+
+.mc-comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-comment-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mc-space-2);
+  margin-bottom: var(--mc-space-1);
+  flex-wrap: wrap;
+}
+
+.mc-comment-author {
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  color: var(--mc-white);
+  text-decoration: none;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-comment-author:hover {
+  color: var(--mc-blue-bright);
+}
+
+.mc-comment-time {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.06em;
+}
+
+.mc-comment-text {
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  line-height: 1.65;
+  word-break: break-word;
+}
+
+/* --- Comment Actions --- */
+.mc-comment-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-3);
+  margin-top: var(--mc-space-2);
+}
+
+.mc-comment-action {
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: var(--mc-font-mono);
+  letter-spacing: 0.06em;
+  transition: color var(--mc-dur-fast) var(--mc-ease);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-1);
+}
+
+.mc-comment-action:hover {
+  color: var(--mc-white-dim);
+}
+
+.mc-comment-action .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-comment-action:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* --- Nested Reply --- */
+.mc-comment-replies {
+  margin-top: var(--mc-space-3);
+  margin-left: var(--mc-space-8);
+  border-left: 2px solid var(--mc-border);
+  padding-left: var(--mc-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-3);
+}
+
+.mc-comment-reply {
+  display: flex;
+  gap: var(--mc-space-3);
+  animation: mcFadeIn var(--mc-dur-base) var(--mc-ease-out) both;
+}
+
+/* ============================================
+   SHARE PANEL
+   ============================================ */
+
+.mc-share-panel {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  padding: var(--mc-space-5);
+  margin-bottom: var(--mc-space-4);
+}
+
+.mc-share-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  color: var(--mc-white-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: var(--mc-space-4);
+}
+
+.mc-share-options {
+  display: flex;
+  gap: var(--mc-space-3);
+  flex-wrap: wrap;
+}
+
+.mc-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+  padding: var(--mc-space-2) var(--mc-space-4);
+  background: var(--mc-raised);
+  border: 1px solid var(--mc-border-soft);
+  border-radius: var(--mc-radius-md);
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  cursor: pointer;
+  transition:
+    background var(--mc-dur-fast) var(--mc-ease),
+    border-color var(--mc-dur-fast) var(--mc-ease),
+    color var(--mc-dur-fast) var(--mc-ease);
+  font-family: var(--mc-font-ui);
+  position: relative;
+}
+
+.mc-share-btn:hover {
+  background: var(--mc-surface);
+  border-color: var(--mc-blue-dim);
+  color: var(--mc-white);
+}
+
+.mc-share-btn .Stars {
+  display: none;
+  font-style: normal;
+}
+
+.mc-share-btn:hover .Stars {
+  display: block;
+  filter: drop-shadow(0 0 10px var(--mc-star-glow));
+}
+
+/* ============================================
+   RELATED POSTS
+   ============================================ */
+
+.mc-related {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius-lg);
+  overflow: hidden;
+}
+
+.mc-related-header {
+  padding: var(--mc-space-4) var(--mc-space-5);
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-related-title {
+  font-family: var(--mc-font-display);
+  font-size: var(--mc-text-sm);
+  font-weight: 600;
+  color: var(--mc-white-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mc-related-item {
+  display: flex;
+  gap: var(--mc-space-3);
+  align-items: center;
+  padding: var(--mc-space-3) var(--mc-space-5);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--mc-dur-fast) var(--mc-ease);
+}
+
+.mc-related-item + .mc-related-item {
+  border-top: 1px solid var(--mc-border);
+}
+
+.mc-related-item:hover {
+  background: var(--mc-raised);
+}
+
+.mc-related-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-related-item-text {
+  font-size: var(--mc-text-sm);
+  color: var(--mc-white-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+.mc-related-item-meta {
+  font-family: var(--mc-font-mono);
+  font-size: var(--mc-text-xs);
+  color: var(--mc-white-ghost);
+  letter-spacing: 0.06em;
+}
