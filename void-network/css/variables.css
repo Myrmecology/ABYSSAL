@@ -1,0 +1,105 @@
+/* ============================================
+   THE MINDLESS CORRIDOR — variables.css
+   Design System — All tokens defined here.
+   No other file hardcodes a value.
+   ============================================ */
+
+:root {
+
+  /* --- Brand Colors --- */
+  --mc-black:        #050508;
+  --mc-deep:         #0a0a0f;
+  --mc-surface:      #0f0f17;
+  --mc-raised:       #16161f;
+  --mc-border:       #1e1e2e;
+  --mc-border-soft:  #252535;
+
+  /* --- Blue Scale --- */
+  --mc-blue-dim:     #1a3a5c;
+  --mc-blue-mid:     #2563a8;
+  --mc-blue-core:    #3b82f6;
+  --mc-blue-bright:  #60a5fa;
+  --mc-blue-glow:    rgba(59, 130, 246, 0.15);
+  --mc-blue-pulse:   rgba(59, 130, 246, 0.06);
+
+  /* --- Red Scale --- */
+  --mc-red-dim:      #3a0a0a;
+  --mc-red-mid:      #7f1d1d;
+  --mc-red-core:     #dc2626;
+  --mc-red-bright:   #f87171;
+  --mc-red-glow:     rgba(220, 38, 38, 0.15);
+
+  /* --- White Scale --- */
+  --mc-white:        #f0f0f8;
+  --mc-white-dim:    #c8c8d8;
+  --mc-white-muted:  #8888a0;
+  --mc-white-ghost:  #44445a;
+
+  /* --- Star Glow (button hover signature) --- */
+  --mc-star-glow:    #fffdef;
+
+  /* --- Typography --- */
+  --mc-font-ui:      'Inter', 'Helvetica Neue', sans-serif;
+  --mc-font-mono:    'Share Tech Mono', monospace;
+  --mc-font-display: 'Oswald', sans-serif;
+
+  /* --- Type Scale --- */
+  --mc-text-xs:      0.68rem;
+  --mc-text-sm:      0.78rem;
+  --mc-text-base:    0.9rem;
+  --mc-text-md:      1rem;
+  --mc-text-lg:      1.2rem;
+  --mc-text-xl:      1.5rem;
+  --mc-text-2xl:     2rem;
+  --mc-text-3xl:     3rem;
+
+  /* --- Spacing Scale --- */
+  --mc-space-1:      0.25rem;
+  --mc-space-2:      0.5rem;
+  --mc-space-3:      0.75rem;
+  --mc-space-4:      1rem;
+  --mc-space-5:      1.25rem;
+  --mc-space-6:      1.5rem;
+  --mc-space-8:      2rem;
+  --mc-space-10:     2.5rem;
+  --mc-space-12:     3rem;
+  --mc-space-16:     4rem;
+
+  /* --- Border Radius --- */
+  --mc-radius-sm:    2px;
+  --mc-radius-md:    4px;
+  --mc-radius-lg:    8px;
+  --mc-radius-full:  9999px;
+
+  /* --- Transitions --- */
+  --mc-ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --mc-ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --mc-ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --mc-dur-fast:     150ms;
+  --mc-dur-base:     250ms;
+  --mc-dur-slow:     400ms;
+  --mc-dur-crawl:    800ms;
+
+  /* --- Shadows --- */
+  --mc-shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.5);
+  --mc-shadow-md:    0 4px 12px rgba(0, 0, 0, 0.6);
+  --mc-shadow-lg:    0 8px 32px rgba(0, 0, 0, 0.8);
+  --mc-shadow-blue:  0 0 20px rgba(59, 130, 246, 0.2);
+  --mc-shadow-red:   0 0 20px rgba(220, 38, 38, 0.2);
+
+  /* --- Layout --- */
+  --mc-feed-width:   680px;
+  --mc-sidebar-width:320px;
+  --mc-nav-height:   56px;
+  --mc-max-width:    1200px;
+
+  /* --- Z-Index Scale --- */
+  --mc-z-base:       1;
+  --mc-z-raised:     10;
+  --mc-z-dropdown:   100;
+  --mc-z-sticky:     200;
+  --mc-z-overlay:    1000;
+  --mc-z-modal:      2000;
+  --mc-z-ambient:    9000;
+
+}

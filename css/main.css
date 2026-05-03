@@ -195,6 +195,21 @@ body {
   font-size: 0.75rem;
 }
 
+/* --- The Mindless Corridor nav entry --- */
+/* Subtly distinct from ABYSSAL nav links — hints at a different world */
+#nav-corridor {
+  color: var(--ice-blue);
+  border-bottom-color: var(--ice-blue);
+  opacity: 0.75;
+  transition: color 0.3s, border-color 0.3s, opacity 0.3s;
+}
+
+#nav-corridor:hover {
+  color: #a8d4e8;
+  border-color: #a8d4e8;
+  opacity: 1;
+}
+
 /* --- Hero --- */
 .hero {
   padding: 6rem 2rem;
