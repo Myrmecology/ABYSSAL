@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile — The Mindless Corridor</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/feed.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAV
+       ========================================== -->
+  <nav class="mc-topnav">
+
+    <a href="index.html" class="mc-wordmark">
+      <span class="mc-wordmark-dot"></span>
+      THE MINDLESS CORRIDOR
+    </a>
+
+    <div class="mc-topnav-center">
+      <div class="mc-search-wrap">
+        <span class="mc-search-icon">⬡</span>
+        <input
+          type="text"
+          class="mc-search-input"
+          placeholder="Search. We already know what you are looking for."
+        />
+      </div>
+    </div>
+
+    <div class="mc-topnav-right">
+
+      <a href="notifications.html" class="mc-nav-icon-btn" aria-label="Notifications">
+        ◻
+        <span class="mc-badge">4</span>
+      </a>
+
+      <a href="corridor.html" class="mc-nav-icon-btn" aria-label="The Corridor">
+        ⬡
+      </a>
+
+      <div class="mc-nav-avatar">
+        <div class="mc-avatar mc-avatar--sm mc-avatar--c0"
+             style="width:100%;height:100%;border:none;">
+          EV
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       PAGE BODY
+       ========================================== -->
+  <div class="mc-page-body mc-fade-in">
+
+    <!-- Profile Column -->
+    <div class="mc-feed-col">
+
+      <!-- Return to ABYSSAL -->
+      <div class="mc-return-wrap"></div>
+
+      <!-- Profile Header Card -->
+      <div class="mc-profile-header">
+
+        <!-- Cover -->
+        <div class="mc-profile-cover"></div>
+
+        <!-- Header Body — rendered by profile.js -->
+        <div class="mc-profile-header-body"></div>
+
+        <!-- Profile Tabs -->
+        <div class="mc-profile-tabs"></div>
+
+      </div>
+
+      <!-- Tab Panels -->
+      <div id="panel-posts"   class="mc-profile-panel is-active"></div>
+      <div id="panel-media"   class="mc-profile-panel"></div>
+      <div id="panel-about"   class="mc-profile-panel"></div>
+      <div id="panel-archive" class="mc-profile-panel"></div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="mc-sidebar-col">
+
+      <!-- Back to Feed -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Navigate</div>
+        <div style="display:flex;flex-direction:column;gap:var(--mc-space-2);">
+          <a href="index.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ← Back to Feed
+            <span class="Stars">✦</span>
+          </a>
+          <a href="notifications.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ◻ Notifications
+            <span class="Stars">✦</span>
+          </a>
+          <a href="corridor.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ⬡ Enter The Corridor
+            <span class="Stars">✦</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Profile Notice -->
+      <div class="mc-sidebar-card" style="border-color:var(--mc-blue-dim);">
+        <div class="mc-sidebar-card-title" style="color:var(--mc-blue-bright);">
+          Profile Data
+        </div>
+        <p style="font-family:var(--mc-font-mono);font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);line-height:1.9;letter-spacing:0.06em;">
+          All profile information<br>
+          is provided by the user.<br>
+          All profile information<br>
+          has been verified.<br>
+          Verification is approximate.
+        </p>
+      </div>
+
+      <!-- System Notice -->
+      <div class="mc-sidebar-card" style="border-color:var(--mc-red-dim);">
+        <div class="mc-sidebar-card-title" style="color:var(--mc-red-bright);">
+          You Are Being Seen
+        </div>
+        <p style="font-family:var(--mc-font-mono);font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);line-height:1.9;letter-spacing:0.06em;">
+          This profile has been<br>
+          viewed 0 times today.<br>
+          This profile has been<br>
+          viewed continuously.<br>
+          Both are correct.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="mc-toast-wrap"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ambient.js"></script>
+  <script src="js/feed.js"></script>
+  <script src="js/profile.js"></script>
+
+</body>
+</html>

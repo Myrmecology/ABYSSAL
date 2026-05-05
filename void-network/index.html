@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Mindless Corridor</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/feed.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAV
+       ========================================== -->
+  <nav class="mc-topnav">
+
+    <!-- Wordmark -->
+    <a href="index.html" class="mc-wordmark">
+      <span class="mc-wordmark-dot"></span>
+      THE MINDLESS CORRIDOR
+    </a>
+
+    <!-- Search -->
+    <div class="mc-topnav-center">
+      <div class="mc-search-wrap">
+        <span class="mc-search-icon">⬡</span>
+        <input
+          type="text"
+          class="mc-search-input"
+          placeholder="Search. We already know what you are looking for."
+          id="mc-search"
+        />
+      </div>
+    </div>
+
+    <!-- Nav Right -->
+    <div class="mc-topnav-right">
+
+      <a href="notifications.html" class="mc-nav-icon-btn" aria-label="Notifications">
+        ◻
+        <span class="mc-badge">4</span>
+      </a>
+
+      <a href="corridor.html" class="mc-nav-icon-btn" aria-label="The Corridor">
+        ⬡
+      </a>
+
+      <div class="mc-nav-avatar">
+        <div class="mc-avatar mc-avatar--sm mc-avatar--c0"
+             style="width:100%;height:100%;border:none;">
+          EV
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       PAGE BODY
+       ========================================== -->
+  <div class="mc-page-body mc-fade-in">
+
+    <!-- Feed Column -->
+    <div class="mc-feed-col">
+
+      <!-- Return to ABYSSAL -->
+      <div class="mc-return-wrap"></div>
+
+      <!-- Story Rail -->
+      <div class="mc-story-rail" id="mc-story-rail"></div>
+
+      <!-- Feed Tabs -->
+      <div class="mc-feed-tabs" id="mc-feed-tabs"></div>
+
+      <!-- Compose Box -->
+      <div class="mc-compose" id="mc-compose"></div>
+
+      <!-- Posts render here via feed.js -->
+
+    </div>
+
+    <!-- Sidebar Column -->
+    <aside class="mc-sidebar-col">
+
+      <!-- Who To Follow -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Who To Follow</div>
+        <div class="mc-who-list" id="mc-who-list"></div>
+        <div class="mc-divider"></div>
+        <button class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full"
+                id="show-more-btn">
+          Show more
+          <span class="Stars">✦</span>
+        </button>
+      </div>
+
+      <!-- Trending -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Trending In The Corridor</div>
+        <div class="mc-trending-list" id="mc-trending-list"></div>
+      </div>
+
+      <!-- System Notice -->
+      <div class="mc-sidebar-card" style="border-color:var(--mc-red-dim);">
+        <div class="mc-sidebar-card-title" style="color:var(--mc-red-bright);">
+          System Notice
+        </div>
+        <p style="font-family:var(--mc-font-mono);font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);line-height:1.9;letter-spacing:0.06em;">
+          This platform monitors all activity.<br>
+          This is standard.<br>
+          Your presence has been noted.<br>
+          Your absence is also noted.<br>
+          There is no difference.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="mc-toast-wrap"></div>
+
+  <!-- Scripts — order matters -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ambient.js"></script>
+  <script src="js/feed.js"></script>
+
+  <!-- Search interaction -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const search = document.getElementById('mc-search');
+      if (!search) return;
+      search.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && search.value.trim()) {
+          const msgs = [
+            'Search recorded. Results are being curated.',
+            'We found results. We are deciding which ones you should see.',
+            'Your search has been logged. Along with all previous searches.',
+          ];
+          if (window.MC && MC.toast) {
+            MC.toast(MC.pick(msgs), 'default', 3200);
+          }
+          search.value = '';
+        }
+      });
+
+      const showMore = document.getElementById('show-more-btn');
+      if (showMore) {
+        showMore.addEventListener('click', () => {
+          if (window.MC && MC.toast) {
+            MC.toast('There are no more suggestions. There are always more suggestions.', 'default', 3000);
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

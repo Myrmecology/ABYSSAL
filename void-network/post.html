@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post — The Mindless Corridor</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/feed.css" />
+  <link rel="stylesheet" href="css/post.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAV
+       ========================================== -->
+  <nav class="mc-topnav">
+
+    <a href="index.html" class="mc-wordmark">
+      <span class="mc-wordmark-dot"></span>
+      THE MINDLESS CORRIDOR
+    </a>
+
+    <div class="mc-topnav-center">
+      <div class="mc-search-wrap">
+        <span class="mc-search-icon">⬡</span>
+        <input
+          type="text"
+          class="mc-search-input"
+          placeholder="Search. We already know what you are looking for."
+        />
+      </div>
+    </div>
+
+    <div class="mc-topnav-right">
+
+      <a href="notifications.html" class="mc-nav-icon-btn" aria-label="Notifications">
+        ◻
+        <span class="mc-badge">4</span>
+      </a>
+
+      <a href="corridor.html" class="mc-nav-icon-btn" aria-label="The Corridor">
+        ⬡
+      </a>
+
+      <div class="mc-nav-avatar">
+        <div class="mc-avatar mc-avatar--sm mc-avatar--c0"
+             style="width:100%;height:100%;border:none;">
+          EV
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       PAGE BODY
+       ========================================== -->
+  <div class="mc-page-body mc-fade-in">
+
+    <!-- Post Column -->
+    <div class="mc-feed-col">
+
+      <!-- Return to ABYSSAL -->
+      <div class="mc-return-wrap"></div>
+
+      <!-- Back to feed -->
+      <div style="margin-bottom:var(--mc-space-2);">
+        <a href="index.html"
+           style="font-family:var(--mc-font-mono);
+                  font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);
+                  text-decoration:none;
+                  letter-spacing:0.1em;
+                  transition:color 0.2s ease;"
+           onmouseover="this.style.color='var(--mc-white-dim)'"
+           onmouseout="this.style.color='var(--mc-white-ghost)'">
+          ← BACK TO FEED
+        </a>
+      </div>
+
+      <!-- Single Post — rendered by post.js -->
+      <article class="mc-single-post"></article>
+
+      <!-- Comment Thread — rendered by post.js -->
+      <div class="mc-comment-thread"></div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="mc-sidebar-col">
+
+      <!-- Navigate -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Navigate</div>
+        <div style="display:flex;flex-direction:column;gap:var(--mc-space-2);">
+          <a href="index.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ← Back to Feed
+            <span class="Stars">✦</span>
+          </a>
+          <a href="notifications.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ◻ Notifications
+            <span class="Stars">✦</span>
+          </a>
+          <a href="corridor.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ⬡ Enter The Corridor
+            <span class="Stars">✦</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Share Panel — rendered by post.js -->
+      <div class="mc-share-panel"></div>
+
+      <!-- Related Posts — rendered by post.js -->
+      <div class="mc-related"></div>
+
+      <!-- System Notice -->
+      <div class="mc-sidebar-card" style="border-color:var(--mc-red-dim);">
+        <div class="mc-sidebar-card-title" style="color:var(--mc-red-bright);">
+          Post Data
+        </div>
+        <p style="font-family:var(--mc-font-mono);font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);line-height:1.9;letter-spacing:0.06em;">
+          This post exists.<br>
+          This post has always existed.<br>
+          The author is aware<br>
+          you are reading it.<br>
+          They were aware before you arrived.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="mc-toast-wrap"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ambient.js"></script>
+  <script src="js/feed.js"></script>
+  <script src="js/post.js"></script>
+
+</body>
+</html>

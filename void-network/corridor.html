@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE MINDLESS CORRIDOR</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/corridor.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAV — Minimal on corridor page
+       ========================================== -->
+  <nav class="mc-topnav">
+
+    <a href="index.html" class="mc-wordmark">
+      <span class="mc-wordmark-dot"></span>
+      THE MINDLESS CORRIDOR
+    </a>
+
+    <div class="mc-topnav-right">
+
+      <a href="notifications.html" class="mc-nav-icon-btn" aria-label="Notifications">
+        ◻
+        <span class="mc-badge">4</span>
+      </a>
+
+      <div class="mc-nav-avatar">
+        <div class="mc-avatar mc-avatar--sm mc-avatar--c0"
+             style="width:100%;height:100%;border:none;">
+          EV
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       CORRIDOR PAGE
+       ========================================== -->
+  <div class="mc-corridor-page">
+
+    <!-- Entry Sequence — rendered by corridor.js -->
+    <div class="mc-corridor-entry"></div>
+
+    <!-- Terminal — rendered by corridor.js -->
+    <div class="mc-corridor-terminal"></div>
+
+    <!-- Data Panels — rendered by corridor.js -->
+    <div class="mc-corridor-panels"></div>
+
+    <!-- Message Stream — rendered by corridor.js -->
+    <div class="mc-corridor-stream"></div>
+
+    <!-- Return Buttons — rendered by corridor.js -->
+    <div class="mc-corridor-return"></div>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="mc-toast-wrap"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ambient.js"></script>
+  <script src="js/corridor.js"></script>
+
+  <!-- Corridor page extras -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* Konami-style easter egg —
+         type "corridor" anywhere on the page
+         to trigger a glitch burst            */
+      let typed = '';
+      const secret = 'corridor';
+
+      document.addEventListener('keydown', (e) => {
+        typed += e.key.toLowerCase();
+        if (typed.length > secret.length) {
+          typed = typed.slice(-secret.length);
+        }
+        if (typed === secret) {
+          typed = '';
+          const title = document.querySelector('.mc-corridor-title');
+          if (title && window.MC && MC.glitch) {
+            MC.glitch(title);
+          }
+          if (window.MC && MC.toast) {
+            MC.toast(
+              'You typed the word. The word was already typed.',
+              'red',
+              4000
+            );
+          }
+        }
+      });
+
+      /* Cursor becomes crosshair on corridor page */
+      document.body.style.cursor = 'crosshair';
+
+      /* Idle timer — if user does nothing for
+         60 seconds the title changes            */
+      let idleTimer = null;
+
+      const resetIdle = () => {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          document.title = 'are you still there.';
+          setTimeout(() => {
+            document.title = 'THE MINDLESS CORRIDOR';
+          }, 4000);
+        }, 60000);
+      };
+
+      ['mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
+        document.addEventListener(evt, resetIdle, { passive: true });
+      });
+
+      resetIdle();
+
+    });
+  </script>
+
+</body>
+</html>

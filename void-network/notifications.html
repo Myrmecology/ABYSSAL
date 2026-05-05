@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — The Mindless Corridor</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/notifications.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAV
+       ========================================== -->
+  <nav class="mc-topnav">
+
+    <a href="index.html" class="mc-wordmark">
+      <span class="mc-wordmark-dot"></span>
+      THE MINDLESS CORRIDOR
+    </a>
+
+    <div class="mc-topnav-center">
+      <div class="mc-search-wrap">
+        <span class="mc-search-icon">⬡</span>
+        <input
+          type="text"
+          class="mc-search-input"
+          placeholder="Search. We already know what you are looking for."
+        />
+      </div>
+    </div>
+
+    <div class="mc-topnav-right">
+
+      <a href="notifications.html"
+         class="mc-nav-icon-btn"
+         aria-label="Notifications"
+         style="border-color:var(--mc-blue-dim);">
+        ◻
+        <span class="mc-badge">4</span>
+      </a>
+
+      <a href="corridor.html" class="mc-nav-icon-btn" aria-label="The Corridor">
+        ⬡
+      </a>
+
+      <div class="mc-nav-avatar">
+        <div class="mc-avatar mc-avatar--sm mc-avatar--c0"
+             style="width:100%;height:100%;border:none;">
+          EV
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       PAGE BODY
+       ========================================== -->
+  <div class="mc-page-body mc-fade-in">
+
+    <!-- Notifications Column -->
+    <div class="mc-feed-col">
+
+      <!-- Return to ABYSSAL -->
+      <div class="mc-return-wrap"></div>
+
+      <!-- Notifications Shell -->
+      <div class="mc-notif-page">
+
+        <!-- Header — rendered by notifications.js -->
+        <div class="mc-notif-page-header"></div>
+
+        <!-- Filter Tabs — rendered by notifications.js -->
+        <div class="mc-notif-tabs"></div>
+
+        <!-- Notification List — rendered by notifications.js -->
+        <div class="mc-notif-list"></div>
+
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="mc-sidebar-col">
+
+      <!-- Navigate -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Navigate</div>
+        <div style="display:flex;flex-direction:column;gap:var(--mc-space-2);">
+          <a href="index.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ← Back to Feed
+            <span class="Stars">✦</span>
+          </a>
+          <a href="corridor.html" class="mc-btn mc-btn--ghost mc-btn--sm mc-btn--full">
+            ⬡ Enter The Corridor
+            <span class="Stars">✦</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Notification Settings -->
+      <div class="mc-sidebar-card">
+        <div class="mc-sidebar-card-title">Notification Settings</div>
+        <div style="display:flex;flex-direction:column;gap:var(--mc-space-3);">
+
+          <div style="display:flex;align-items:center;
+                      justify-content:space-between;">
+            <span style="font-family:var(--mc-font-mono);
+                         font-size:var(--mc-text-xs);
+                         color:var(--mc-white-muted);
+                         letter-spacing:0.08em;">
+              All notifications
+            </span>
+            <button class="mc-btn mc-btn--ghost mc-btn--sm"
+                    id="notif-toggle-all">
+              On
+              <span class="Stars">✦</span>
+            </button>
+          </div>
+
+          <div style="display:flex;align-items:center;
+                      justify-content:space-between;">
+            <span style="font-family:var(--mc-font-mono);
+                         font-size:var(--mc-text-xs);
+                         color:var(--mc-white-muted);
+                         letter-spacing:0.08em;">
+              System alerts
+            </span>
+            <button class="mc-btn mc-btn--ghost mc-btn--sm"
+                    id="notif-toggle-system">
+              On
+              <span class="Stars">✦</span>
+            </button>
+          </div>
+
+          <div style="display:flex;align-items:center;
+                      justify-content:space-between;">
+            <span style="font-family:var(--mc-font-mono);
+                         font-size:var(--mc-text-xs);
+                         color:var(--mc-white-muted);
+                         letter-spacing:0.08em;">
+              Live alerts
+            </span>
+            <button class="mc-btn mc-btn--ghost mc-btn--sm"
+                    id="notif-toggle-live">
+              On
+              <span class="Stars">✦</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- System Notice -->
+      <div class="mc-sidebar-card" style="border-color:var(--mc-red-dim);">
+        <div class="mc-sidebar-card-title" style="color:var(--mc-red-bright);">
+          Notification Policy
+        </div>
+        <p style="font-family:var(--mc-font-mono);font-size:var(--mc-text-xs);
+                  color:var(--mc-white-ghost);line-height:1.9;letter-spacing:0.06em;">
+          Notifications are sent<br>
+          when something happens.<br>
+          Notifications are also sent<br>
+          when nothing happens.<br>
+          You will not always know<br>
+          which kind this is.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div class="mc-toast-wrap"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script>
+    /* Preserve MC.notifications array before
+       notifications.js overwrites the key     */
+    window.addEventListener('DOMContentLoaded', () => {}, { once: true });
+    (function() {
+      const _raw = window.MC && window.MC.notifications
+        ? window.MC.notifications
+        : null;
+      window._MC_notif_data = _raw;
+    })();
+  </script>
+  <script src="js/utils.js"></script>
+  <script src="js/ambient.js"></script>
+  <script src="js/notifications.js"></script>
+
+  <!-- Settings toggle interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggles = [
+        { id: 'notif-toggle-all',    msg: 'Notifications cannot be disabled. This is by design.' },
+        { id: 'notif-toggle-system', msg: 'System alerts cannot be disabled. The system does not allow it.' },
+        { id: 'notif-toggle-live',   msg: 'Live alerts have been paused. They will resume on their own schedule.' },
+      ];
+
+      toggles.forEach(({ id, msg }) => {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          if (window.MC && MC.toast) {
+            MC.toast(msg, 'red', 3500);
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

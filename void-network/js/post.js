@@ -8,7 +8,7 @@
 
 'use strict';
 
-const MC = window.MC || {};
+var MC = window.MC || {};
 
 MC.post = (() => {
 
