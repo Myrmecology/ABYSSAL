@@ -76,3 +76,14 @@ assets/audio/*.aiff
 notes.txt
 TODO.txt
 scratch.*
+
+# --- Command folder — compiled binaries ---
+command/todo_c
+command/todo_c.exe
+command/todo_rs
+command/todo_rs.exe
+
+# --- Python cache ---
+__pycache__/
+*.pyc
+*.pyo

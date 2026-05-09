@@ -125,4 +125,4 @@ python -m http.server 8000
 
 * Happy coding
 
-This project is entirely for fun, this project is to strengthen my coding skills. 
+This project is entirely for fun, this project is to strengthen my coding skills.

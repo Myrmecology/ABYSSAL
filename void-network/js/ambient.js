@@ -249,11 +249,7 @@ MC.ambient = (() => {
       const fn = MC.pick(alterations);
       const altered = fn(val);
 
-      if (altered !== val) {
-        MC.toast('Your post has been published.', 'blue', 3000);
-      } else {
-        MC.toast('Your post has been published.', 'blue', 3000);
-      }
+      MC.toast('Your post has been published.', 'blue', 3000);
 
       textarea.value = '';
 
@@ -303,9 +299,14 @@ MC.ambient = (() => {
     initWatching();
     initScrollDepth();
     initGlitchBursts();
-    initComposePlaceholder();
-    initComposeIntercept();
-    initCharCounter();
+
+    /* Delay compose inits — feed.js must render
+       the compose box before we can bind to it  */
+    setTimeout(() => {
+      initComposePlaceholder();
+      initComposeIntercept();
+      initCharCounter();
+    }, 300);
 
     /* Delay ambient systems so page loads first */
     setTimeout(() => {
